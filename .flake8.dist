@@ -1,0 +1,156 @@
+[flake8]
+#
+# flake8 config file docs: https://flake8.pycqa.org/en/latest/user/configuration.html
+#
+# in venv
+# pip install wemake-python-styleguide
+# flake8 websiteapp/
+#
+# Refactoring hints:
+# https://flake8.codes/wemake-python-styleguide/0.15.3/index.html
+
+# https://pypi.org/project/flake8-noqa/
+noqa-require-code
+max-line-length = 132
+
+exclude =
+    .git,
+    __pycache__,
+# This contains our built documentation
+    build,
+    dist
+
+# it's not a bug that we aren't using all of hacking
+ignore =
+    D101, # D101 Missing docstring in public class
+    D102, # D102 Missing docstring in public method
+    D107, # D107 Missing docstring in __init__
+    D200, # D200 One-line docstring should fit on one line with quotes
+    D202, # D202 No blank lines allowed after function docstring
+    D205, # D205 1 blank line required between summary line and description
+    D400, # D400 First line should end with a period
+    D401, # D401 First line should be in imperative mood
+    DAR101, # DAR101 Missing parameter(s) in Docstring
+    DAR201, # DAR201 Missing "Returns" in Docstring: - return
+    DAR401, # DAR401 Missing exception(s) in Raises section: -r TypeError
+    E241, # E241 multiple spaces after ':'
+    E251, # E251 unexpected spaces around keyword / parameter equals
+    F821, # F821 undefined name 'PropFile'
+    I001, # I001 isort found an import in the wrong position
+    I003, # I003 isort expected 1 blank line in imports,
+    I004, # I004 isort found an unexpected blank line in imports
+    I005, # I005 isort found an unexpected missing import
+    RST213, # RST213 Inline emphasis start-string without end-string.
+    W503, # W503 line break before binary operator
+    WPS110, # WPS110 Found wrong variable name: item
+    WPS114, # WPS114 Found underscored number name pattern: val_1
+    WPS115, # WPS115 Found upper-case constant in a class
+    WPS201, # WPS201 Found module with too many imports: 13 > 12
+    WPS204, #WPS204 Found overused expression: config['opening']; used 5 > 4
+    WPS210, # WPS210 Found too many local variables: 14 > 5
+    WPS211, # WPS211 Found too many arguments: 6 > 5
+    WPS213, # WPS213 Found too many expressions: 10 > 9
+    WPS214, # WPS214 Found too many methods: 9 > 7
+    WPS220, # WPS220 Found too deep nesting: 28 > 20
+    WPS221, # WPS221 Found line with high Jones Complexity: 17 > 14
+    WPS226, # WPS226 Found string constant over-use: " > 3
+    WPS229, # WPS229 Found too long ``try`` body length: 2 > 1
+    WPS231, # WPS231 Found function with too much cognitive complexity: 83 > 12
+    WPS232, # WPS232 Found module cognitive complexity that is too high: 27.7 > 8
+    WPS237, # WPS237 Found a too complex `f` string
+    WPS238, # WPS238 Found too many raises in a function: 5 > 3
+    WPS300, # WPS300 Found local folder import
+    WPS302, # WPS302 Found unicode string prefix
+    WPS305, # WPS305 Found `f` string
+    WPS317, # WPS317 Found incorrect multi-line parameters
+    WPS318, # WPS318 Found extra indentation
+    WPS319, # WPS319 Found bracket in wrong position
+    WPS336, # WPS336 Found explicit string concatenation
+    WPS338, # WPS338 Found incorrect order of methods in a class
+    WPS360, # WPS360 Found an unnecessary use of a raw string
+    WPS402, # WPS402 Found `noqa` comments overuse: 12
+    WPS420, # WPS420 Found wrong keyword: pass
+    WPS442, # WPS442 Found outer scope names shadowing:
+    WPS600, # WPS600 Found subclassing a builtin: list
+    WPS602, # WPS602 Found using `@staticmethod`
+    WPS604, # WPS604 Found incorrect node inside `class` body
+    WPS605, # WPS605 Found method without arguments
+    WPS615, # WPS615 Found unpythonic getter or setter
+
+per-file-ignores =
+    # WPS420 Found wrong keyword: pass
+    # WPS604 Found incorrect node inside `class` body
+    transtool/report/error.py: WPS420, WPS604,
+    transtool/report/warn.py: WPS420, WPS604,
+
+	# WPS437 Found protected attribute usage
+	transtool/report/group.py: WPS437,
+
+    # WPS230 Found too many public instance attributes
+    transtool/config/config.py: WPS230,
+
+    # WPS204 Found overused expression: config['opening']; used 5 > 4
+    # WPS213 Found too many expressions
+    # WPS301 Found dotted raw import: transtool.checks
+    # WPS421 Found wrong function call: dir, print
+    # WPS437 Found protected attribute usage
+    # WPS529 Found implicit `.get()` dict usage
+    # WPS609 Found direct magic attribute usage: __setattr__, __getattr__, ...
+    # WPS433 Found nested import
+    # WPS425 Found boolean non-keyword argument: True, False
+    transtool/config/reader.py: WPS609, WPS421, WPS204, WPS529, WPS433,
+    transtool/config/builder.py: WPS609, WPS301, WPS437, WPS213, WPS425,
+
+    # WPS111 Found too short name
+    # WPS214 Found too many methods
+    # WPS317 Found incorrect multi-line parameters
+    # WPS323 Found `%` string formatting
+    # WPS421 Found wrong function call: print
+    # WPS437 Found protected attribute usage
+    # WPS518 Found implicit `enumerate()` call
+    transtool/log.py: WPS214, WPS437, WPS111, WPS317, WPS421, WPS518, WPS323,
+
+    # WPS201 Found module with too many imports: 13 > 12
+    # WPS213 Found too many expressions: 13 > 9
+    # WPS317 Found incorrect multi-line parameters
+    # WPS323 Found `%` string formatting
+    transtool/main.py: WPS201, WPS213, WPS317, WPS323,
+
+    # S101 Use of assert detected. The enclosed code will be removed when compiling to optimised byte code.
+    # WPS421 Found wrong function call: dir
+    # WPS430 Found nested function: overrider
+    transtool/decorators/overrides.py: WPS430, S101, WPS421,
+
+    # WPS201 Found module with too many imports: 21 > 12
+    # WPS230 Found too many public instance attributes
+    transtool/prop/file.py: WPS201, WPS230,
+
+    # WPS100 Found wrong module name
+    # WPS421 Found wrong function call: print
+    transtool/utils.py: WPS421, WPS100,
+
+    # S311 Standard pseudo-random generators are not suitable for security/cryptographic purposes.
+    # WPS118 Found too long name
+    # WPS214 Found too many methods
+    # WPS323 Found `%` string formatting
+    # WPS432 Found magic number
+    # WPS437 Found protected attribute usage
+    # WPS609 Found direct magic attribute usage: __abstractmethods__
+    tests/*: S311, WPS323, WPS214, WPS432, WPS609, WPS118, WPS437,
+
+    # WPS431 Found nested class: FakeArgs
+    tests/report/test_config_builder.py: WPS431,
+
+    # WPS430 Found nested function: log_abort_side_effect
+    # S311 Standard pseudo-random generators are not suitable for security/cryptographic purposes.
+    # N802 function name 'assertTranslation' should be lowercase
+    tests/prop/test_file.py: WPS430, S311, N802
+
+    # WPS230 Found too many public instance attributes: 8 > 6
+    # WPS414 Found incorrect unpacking target
+    # WPS425 Found boolean non-keyword argument: True, False
+    # WPS431 Found nested class: FakeArgs
+    # WPS437 Found protected attribute usage: _validate
+    # WPS609 Found direct magic attribute usage: __setattr__
+    # S311 Standard pseudo-random generators are not suitable for security/cryptographic purposes.
+    tests/config/test_config_builder.py: WPS437, WPS425, WPS431, WPS230, WPS414, WPS609, S311,

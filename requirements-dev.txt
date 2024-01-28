@@ -1,0 +1,5 @@
+-r requirements.txt
+twine
+wheel
+build
+wemake-python-styleguide

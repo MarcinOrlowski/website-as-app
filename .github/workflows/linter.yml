@@ -1,0 +1,46 @@
+#
+# Website As App
+# Run any website as standalone desktop application
+#
+# @author    Marcin Orlowski <mail (#) marcinOrlowski (.) com>
+# @copyright 2023-2024 Marcin Orlowski
+# @license   https://www.opensource.org/licenses/mit-license.php MIT
+# @link      https://github.com/MarcinOrlowski/website-as-app
+#
+
+name: "Code lint"
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master, dev ]
+
+jobs:
+  unittests:
+    name: "Linting"
+    runs-on: ubuntu-latest
+
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - name: "Checkout sources"
+        uses: actions/checkout@v4
+
+      # https://github.com/marketplace/actions/paths-changes-filter
+      - name: "Look for changed files..."
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            srcs:
+              - '**/*.py'
+
+      - name: "Installing dependencies..."
+        if: steps.filter.outputs.srcs == 'true'
+        run: pip install -r requirements-dev.txt
+
+      # https://github.com/marketplace/actions/wemake-python-styleguide
+      # https://wemake-python-styleguide.readthedocs.io/en/latest/pages/usage/integrations/github-actions.html
+      - name: "Running linter..."
+        if: steps.filter.outputs.srcs == 'true'
+        uses: wemake-services/wemake-python-styleguide@0.18.0
