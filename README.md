@@ -4,9 +4,6 @@
 
 Run any website as standalone desktop application
 
-[master](https://github.com/MarcinOrlowski/website-as-app/tree/master) branch:
-[![Code lint](https://github.com/MarcinOrlowski/website-as-app/actions/workflows/linter.yml/badge.svg?branch=master)](https://github.com/MarcinOrlowski/website-as-app/actions/workflows/linter.yml)
-[![MD Lint](https://github.com/MarcinOrlowski/website-as-app/actions/workflows/markdown.yml/badge.svg?branch=master)](https://github.com/MarcinOrlowski/website-as-app/actions/workflows/markdown.yml)
 ---
 
 Small Python script opening any web page in dedicated window, using embedded QT WebEngine. There are
@@ -21,19 +18,20 @@ window manager or task switcher etc.
 
 ## Installation
 
-Use `pip` to install the script system-wide:
+I recommend you use `pipx` to install this tool in isolated environment:
+
+```bash
+$ pipx install website-as-app
+```
+
+You can also use plain `pip`:
 
 ```bash
 $ pip install website-as-app
 ```
 
-If you want to use virtual environment (which is recommended):
-
-```bash
-$ python -m venv venv
-$ source venv/bin/activate
-$ pip install website-as-app
-```  
+But that might be a problem on some distributions no longer allowing such installations, therefore
+use of `pipx` is strongly recommended as the all-in-one solution.
 
 Once app is running, please use `--help` to see all available options, as i.e. custom icon,
 window title etc.
