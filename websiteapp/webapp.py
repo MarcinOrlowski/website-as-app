@@ -162,6 +162,13 @@ class WebApp(QMainWindow):
         app.setApplicationName("Website As App")
 
         window = WebApp()
-        window.show()
+
+        if window.args.minimized and window.args.no_tray:
+            print('Cannot use --no-tray and --minimized at the same time.')
+            app.quit()
+            sys.exit(1)
+
+        if not window.args.minimized:
+            window.show()
 
         app.exec()
