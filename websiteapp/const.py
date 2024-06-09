@@ -18,7 +18,7 @@ from typing import List
 class Const(object):
     APP_NAME: str = 'Website As App'
     APP_PROJECT_NAME: str = 'website-as-app'
-    APP_VERSION: str = '1.0.0'
+    APP_VERSION: str = '1.2.0'
     APP_URL: str = 'https://github.com/MarcinOrlowski/website-as-app/'
     APP_DESCRIPTION: str = 'Opens any web site as standalone desktop app.'
     APP_YEAR: int = 2024
