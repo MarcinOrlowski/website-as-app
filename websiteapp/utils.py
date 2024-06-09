@@ -95,7 +95,7 @@ class Utils(object):
         parser.add_argument('--geometry', '-g', type=str, default='450x600+0+0',
                             help='Initial window ("WIDTHxHEIGHT+X+Y"). Default: "%(default)s"')
         parser.add_argument('--zoom', '-z', type=float, default="1.0",
-                            help='WebView zoom factor. Default: %(default)s')
+                            help='WebView scale. Default: %(default)s (no scale change).')
         parser.add_argument('--no-tray', action='store_true',
                             help='Disables docking app in system tray')
         # parser.add_argument('--minimized', '-m', action='store_true',

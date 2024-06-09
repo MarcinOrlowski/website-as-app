@@ -18,7 +18,7 @@ window manager or task switcher etc.
 
 ## Installation
 
-I recommend you use `pipx` to install this tool in isolated environment:
+I recommend you use [pipx](https://pipx.pypa.io/) to install this tool in isolated environment:
 
 ```bash
 $ pipx install website-as-app
@@ -33,8 +33,8 @@ $ pip install website-as-app
 But that might be a problem on some distributions no longer allowing such installations, therefore
 use of `pipx` is strongly recommended as the all-in-one solution.
 
-Once app is running, please use `--help` to see all available options, as i.e. custom icon,
-window title etc.
+Once installed `webapp` executable (and its alias `runasapp`) should be available in your system.
+Please use `--help` to see all available options, as i.e. custom icons, window title etc.
 
 ## Usage
 
@@ -44,7 +44,7 @@ When app is installed system-wide, you can run it from anywhere:
 $ webapp "https://github.com"
 ```
 
-If you are using virtual environment, there's handy Bash script in [extras/](extras/) directory 
+If you are using virtual environment, there's handy Bash script in `extras/` directory
 which takes care of initializing virtual environment and running the app using that environment.
 You simply use `extras/webapp.sh` script instead of `webapp` directly:
 
@@ -66,12 +66,20 @@ positional arguments:
 url                   The URL to open
 
 options:
---profile PROFILE     Profile name (for cookies isolation etc). Default: "default"
---name NAME, -n NAME  Application name (shown as window title)
---geometry GEOMETRY   Initial window geometry (in format "WIDTHxHEIGHT+X+Y")
---icon ICON, -i ICON  Full path to image file to be used as app icon
---zoom ZOOM, -z ZOOM  Initial WebBrowserView zoom factor. Default: 1.0
---no-tray             Disables system tray support (closing window terminates app)
+--profile PROFILE, -p PROFILE     Profile name (for cookies isolation etc). Default: "default".
+--name NAME, -n NAME              Application name (shown as window title).                    
+--geometry GEOMETRY, -g GEOMETRY  Initial window geometry (in format "WIDTHxHEIGHT+X+Y").
+--icon ICON, -i ICON              Full path to image file to be used as app icon.
+--zoom ZOOM, -z ZOOM              Initial WebBrowserView zoom factor. Default: 1.0 (no zoom).
+--no-tray                         Disables system tray support (closing window terminates app).
+
+--profile PROFILE, -p PROFILE     Profile name (for cookies isolation etc). Default: "default"
+--name NAME, -n NAME              Application name (shown as window title)
+--icon ICON, -i ICON              Full path to PNG image file to be used as app icon
+--geometry GEOMETRY, -g GEOMETRY  Initial window ("WIDTHxHEIGHT+X+Y"). Default: "450x600+0+0"
+--zoom ZOOM, -z ZOOM              WebView scale. Default: 1.0 (no scale change).
+--no-tray, -t                     Disables docking app in system tray (closing window quits app)
+--minimized, -m                   Starts app minimized to system tray.
 ```
 
 The most important option is `--profile` which allows you to isolate cookies and app settings
@@ -79,6 +87,9 @@ per instance. Any instance using the same profile will have access to the same c
 settings. This is useful if you want to run multiple instances of the same app, but with
 different accounts. By default `default` profile is used and it's recommended to use different
 profile per each app instance.
+
+NOTE: `--zoom` accepts fractional values, so you can use i.e. `--zoom 1.25` to scale content up by
+25% or `--zoom 0.75` to scale down to 75% of the original size.
 
 ## Current limitations
 
