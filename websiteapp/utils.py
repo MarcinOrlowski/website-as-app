@@ -96,10 +96,8 @@ class Utils(object):
                             help='Initial window ("WIDTHxHEIGHT+X+Y"). Default: "%(default)s"')
         parser.add_argument('--zoom', '-z', type=float, default="1.0",
                             help='WebView scale. Default: %(default)s (no scale change).')
-        parser.add_argument('--no-tray', action='store_true',
-                            help='Disables docking app in system tray')
-        # parser.add_argument('--minimized', '-m', action='store_true',
-        #                     help='Starts app minimized', target='minimized')
+        parser.add_argument('--no-tray', '-t', action='store_true',
+                            help='Disables docking app in system tray (closing window quits app)')
 
         parser.add_argument('--debug', '-d', action='store_true',
                             help='Makes app print more debug messages during execution')
