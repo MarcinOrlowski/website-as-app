@@ -21,7 +21,7 @@
 # python -m build
 # # Reinstall the app (do not do "install --upgrade" as cached bytecode can not be updated)
 # pip uninstall --yes dist/website_as_app-1.0.0-py3-none-any.whl
-# # intentionally no --upgrade for install to endforce conflict if not uninstalled fully first.
+# # intentionally no --upgrade for install to enforce conflict if not uninstalled fully first.
 # pip install dist/website_as_app-1.0.0-py3-none-any.whl
 # twine upload dist/*
 #
