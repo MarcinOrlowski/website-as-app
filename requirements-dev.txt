@@ -3,3 +3,4 @@ twine
 wheel
 build
 wemake-python-styleguide
+pyinstaller
