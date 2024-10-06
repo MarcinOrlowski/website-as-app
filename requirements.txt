@@ -1,2 +1,3 @@
 PySide6>=6.6.1
 PyQtWebEngine>=5.15.6
+fasteners>=0.19

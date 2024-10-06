@@ -100,6 +100,8 @@ class Utils(object):
                             help='Disables docking app in system tray (closing window quits app)')
         parser.add_argument('--minimized', '-m', action='store_true',
                             help='Starts app minimized to system tray.')
+        parser.add_argument('--allow-multiple', '-a', action='store_true',
+                            help='Allows multiple instances of the app to run on the same profile')
 
         parser.add_argument('--debug', '-d', action='store_true',
                             help='Makes app print more debug messages during execution')
