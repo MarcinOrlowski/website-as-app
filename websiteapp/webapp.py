@@ -11,10 +11,12 @@
 #
 ##################################################################################
 """
+import os
 import sys
 from typing import Optional
 
-from PySide6.QtCore import QUrl
+import fasteners
+from PySide6.QtCore import QUrl, QFileSystemWatcher
 from PySide6.QtGui import QAction
 from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEnginePage, QWebEngineSettings
 from PySide6.QtWebEngineWidgets import QWebEngineView
@@ -28,12 +30,20 @@ from websiteapp.utils import Utils
 
 class WebApp(QMainWindow):
     about_dialog: Optional[About] = None
+    lock: Optional[fasteners.InterProcessLock] = None
+    file_watcher: Optional[QFileSystemWatcher] = None
 
     def __init__(self):
         super().__init__()
 
         self.app = QApplication.instance()
         self.args = Utils.handle_args()
+
+        if not self.args.allow_multiple:
+            if not self.acquire_lock():
+                sys.exit(0)  # Exit silently as we've activated the existing instance
+
+        self.setup_activation_listener()
 
         # Set window geometry
         x, y, width, height = Utils.parse_geometry(self.args.geometry)
@@ -42,9 +52,7 @@ class WebApp(QMainWindow):
 
         app_icon = Utils.get_icon(self.args.icon)
         self.setWindowIcon(app_icon)
-        if self.args.no_tray:
-            self.app.setQuitOnLastWindowClosed(True)  # Ensure we quit when last window is closed
-        else:
+        if not self.args.no_tray:
             self.setup_tray_icon(app_icon)
 
         window_title = self.args.name if self.args.name else self.args.url
@@ -77,6 +85,55 @@ class WebApp(QMainWindow):
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 
+    def acquire_lock(self):
+        """
+        Acquires a lock for the current profile to prevent multiple instances.
+        Returns True if lock was acquired, False otherwise.
+        """
+        lock_file = os.path.join(os.path.expanduser("~"), f".websiteapp_{self.args.profile}.lock")
+        self.lock = fasteners.InterProcessLock(lock_file)
+        if not self.lock.acquire(blocking=False):
+            self.activate_existing_instance()
+            return False
+        return True
+
+    def activate_existing_instance(self):
+        """
+        Sends a signal to the existing instance to activate its window.
+        """
+        self.dbug(f"Bringing existing instance: {Const.APP_NAME}, profile: {self.args.profile}")
+        signal_file = os.path.join(os.path.expanduser("~"),
+                                   f".websiteapp_{self.args.profile}_signal")
+        with open(signal_file, 'w') as f:
+            f.write("activate")
+
+    def setup_activation_listener(self):
+        """
+        Sets up a file system watcher to listen for activation signals.
+        """
+        self.file_watcher = QFileSystemWatcher(self)
+        signal_file = os.path.join(os.path.expanduser("~"),
+                                   f".websiteapp_{self.args.profile}_signal")
+        self.file_watcher.addPath(os.path.dirname(signal_file))
+        self.file_watcher.directoryChanged.connect(self.check_activation_signal)
+
+    def check_activation_signal(self, path):
+        """
+        Checks for activation signals and brings the window to front if signal is received.
+        """
+        signal_file = os.path.join(path, f".websiteapp_{self.args.profile}_signal")
+        if os.path.exists(signal_file):
+            os.remove(signal_file)
+            self.activate_window()
+
+    def activate_window(self):
+        """
+        Brings the window to front and restores it if minimized.
+        """
+        self.showNormal()
+        self.activateWindow()
+        self.raise_()
+
     def closeEvent(self, event) -> None:
         """
         Override closeEvent to hide the window instead of closing it and hides the window instead.
@@ -87,6 +144,9 @@ class WebApp(QMainWindow):
             self.hide()
             event.ignore()
         else:
+            if self.lock:
+                self.lock.release()
+                self.lock = None
             super().closeEvent(event)
 
     def setup_tray_icon(self, icon) -> None:
@@ -106,6 +166,11 @@ class WebApp(QMainWindow):
         about_action.triggered.connect(self.open_about_dialog)
         tray_menu.addAction(about_action)
 
+        show_label = f'Show {self.args.name}' if self.args.name else 'Show'
+        show_action = QAction(show_label, self)
+        show_action.triggered.connect(self.show)
+        tray_menu.addAction(show_action)
+
         quit_label = f'Quit {self.args.name}' if self.args.name else 'Quit'
         quit_action = QAction(quit_label, self.app)
         quit_action.triggered.connect(self.quit_app)
@@ -117,6 +182,9 @@ class WebApp(QMainWindow):
         """
         Closes the application.
         """
+        if self.lock:
+            self.lock.release()
+            self.lock = None
         self.app.quit()
 
     def open_about_dialog(self) -> None:
@@ -144,6 +212,16 @@ class WebApp(QMainWindow):
         """
         self.hide() if self.isVisible() else self.show()
 
+
+    # def on_tray_icon_activated(self, reason):
+    #   if reason == QSystemTrayIcon.ActivationReason.Trigger:
+    #       if self.isVisible():
+    #           self.hide()
+    #       else:
+    #           self.show()
+    #           self.activateWindow()
+
+
     # ############################################################################################ #
 
     def dbug(self, msg: str) -> None:
@@ -162,6 +240,22 @@ class WebApp(QMainWindow):
         app.setApplicationName("Website As App")
 
         window = WebApp()
-        window.show()
 
-        app.exec()
+        if window.args.minimized and window.args.no_tray:
+            print('Cannot use --no-tray and --minimized at the same time.')
+            if window.lock:
+                window.lock.release()
+                window.lock = None
+            app.quit()
+            sys.exit(1)
+
+        if not window.args.minimized:
+            window.show()
+
+        exit_code = app.exec()
+
+        if window.lock:
+            window.lock.release()
+            window.lock = None
+
+        sys.exit(exit_code)

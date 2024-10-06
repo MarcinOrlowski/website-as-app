@@ -3,6 +3,7 @@
 # Dev corner
 
 [&laquo; Back to main menu](README.md)
+
 1. [Profiles](#profiles)
 2. [Building the package](#building-the-package)
 
@@ -21,27 +22,27 @@ directory:
 
 Windows
 
-  ```
-  %USERPROFILE%\AppData\Local\MarcinOrlowski\WebsiteAsApp\<APP_PROFILE_NAME>\
-  ```
+```ascii
+%USERPROFILE%\AppData\Local\MarcinOrlowski\WebsiteAsApp\<APP_PROFILE_NAME>\
+```
 
 Linux
 
-  ```
-  ~/.local/share/MarcinOrlowski/WebsiteAsApp/<APP_PROFILE_NAME>/
-  ```
+```ascii
+~/.local/share/MarcinOrlowski/WebsiteAsApp/<APP_PROFILE_NAME>/
+```
 
 MacOS
 
-  ```
-  ??? (PLEASE ASSIST)
-  ```
+```ascii
+??? (PLEASE ASSIST)
+```
 
 ---
 
 ## Building the package
 
-1. Checkout the source code:
+Checkout the source code:
 
 ```bash
 $ cd <DIR>
@@ -49,37 +50,38 @@ $ git clone ....
 $ cd website-as-app
 ```
 
-2. Setup its runtime environment (NOTE: if you are using different shell than `bash` (i.e. `fish`),
-   please use correct `activate` script from `venv/bin/` directory):
+Setup its runtime environment (NOTE: if you are using different shell than `bash` (i.e. `fish`),
+please use correct `activate` script from `venv/bin/` directory):
 
 ```bash
 $ python -m venv venv
 $ source venv/bin/activate  # User right one for your shell
 ```
 
-3. Install all the dependencies:
+Install all the dependencies:
 
 ```bash
 (venv) $ pip install -r requirements-dev.txt
 ```
 
-4. Build the package:
+Build the package:
 
 ```bash
 (venv) $ python -m build
 ```
 
-5. Install package locally for testing.
-   We intentionally ignore `install --upgrade` while planting new build, as we need to ensure no
-   cached bytecode from previous version remains (which could be the case as we do not increment the
-   version each build).
+Install package locally for testing.
+
+We intentionally ignore `install --upgrade` while planting new build, as we need to ensure no
+cached bytecode from previous version remains (which could be the case as we do not increment the
+version each build).
 
 ```bash
 (venv) $ pip uninstall --yes dist/website_as_app-1.0.0-py3-none-any.whl
 (venv) $ pip install dist/website_as_app-1.0.0-py3-none-any.whl
 ```
 
-6. Test the app
+Test the app
 
 ```bash
 (venv) $ webapp -h

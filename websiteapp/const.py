@@ -9,16 +9,27 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
-#####
+##################################################################################
 """
 
+from enum import Enum
 from typing import List
+
+
+class Version(Enum):
+    MAJOR = 1
+    MINOR = 1
+    PATCH = 0
+
+    @classmethod
+    def as_string(cls) -> str:
+        return f"{cls.MAJOR.value}.{cls.MINOR.value}.{cls.PATCH.value}"
 
 
 class Const(object):
     APP_NAME: str = 'Website As App'
     APP_PROJECT_NAME: str = 'website-as-app'
-    APP_VERSION: str = '1.0.0'
+    APP_VERSION: str = Version.as_string()
     APP_URL: str = 'https://github.com/MarcinOrlowski/website-as-app/'
     APP_DESCRIPTION: str = 'Opens any web site as standalone desktop app.'
     APP_YEAR: int = 2024
