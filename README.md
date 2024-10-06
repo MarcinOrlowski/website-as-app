@@ -98,7 +98,7 @@ NOTE: `--zoom` accepts fractional values, so you can use i.e. `--zoom 1.25` to s
   select given portion of the site and copy using function from context menu as any buttons
   on the page that is using JS to write to the host's clipboard will not currently work.
 
-## License ##
+## License
 
 * Written and copyrighted &copy;2023-2024 by Marcin Orlowski <mail (#) marcinorlowski (.) com>
 * ResponseBuilder is open-sourced software licensed under
