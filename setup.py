@@ -43,6 +43,7 @@ setup(
         'argparse>=1.4.0',
         'PySide6',
         'PyQtWebEngine',
+        'fasteners',
     ],
     entry_points={
         'console_scripts': [

@@ -4,6 +4,9 @@
 
 ---
 
+* 1.1.1 (2024-10-06)
+  * Fixed setup script missing runtime dependency.
+
 * 1.1.0 (2024-10-06)
   * Now allows only single instance per each profile to be run.
   * Added `--minimized` option to start app minimized.
