@@ -4,10 +4,8 @@
 
 ---
 
-* 1.2.0 (2024-10-06)
+* 1.1.0 (2024-10-06)
   * Now allows only single instance per each profile to be run. 
-
-* 1.1.0 (2024-06-09)
   * Added `--minimized` option to start app minimized.
   * Added `-t` as short form for `--no-tray` switch.
 

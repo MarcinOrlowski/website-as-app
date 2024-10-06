@@ -18,7 +18,7 @@ from typing import List
 
 class Version(Enum):
     MAJOR = 1
-    MINOR = 2
+    MINOR = 1
     PATCH = 0
 
     @classmethod
