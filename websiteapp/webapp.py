@@ -146,6 +146,7 @@ class WebApp(QMainWindow):
         else:
             if self.lock:
                 self.lock.release()
+                self.lock = None
             super().closeEvent(event)
 
     def setup_tray_icon(self, icon) -> None:
@@ -183,6 +184,7 @@ class WebApp(QMainWindow):
         """
         if self.lock:
             self.lock.release()
+            self.lock = None
         self.app.quit()
 
     def open_about_dialog(self) -> None:
@@ -243,6 +245,7 @@ class WebApp(QMainWindow):
             print('Cannot use --no-tray and --minimized at the same time.')
             if window.lock:
                 window.lock.release()
+                window.lock = None
             app.quit()
             sys.exit(1)
 
@@ -253,5 +256,6 @@ class WebApp(QMainWindow):
 
         if window.lock:
             window.lock.release()
+            window.lock = None
 
         sys.exit(exit_code)
