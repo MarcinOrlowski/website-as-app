@@ -36,6 +36,11 @@ class WebApp(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        # Check for --version before full argument parsing
+        if '--version' in sys.argv:
+            print(f'{Const.APP_NAME} {Const.APP_VERSION}')
+            sys.exit(0)
+
         self.app = QApplication.instance()
         self.args = Utils.handle_args()
 
