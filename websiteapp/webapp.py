@@ -217,16 +217,6 @@ class WebApp(QMainWindow):
         """
         self.hide() if self.isVisible() else self.show()
 
-
-    # def on_tray_icon_activated(self, reason):
-    #   if reason == QSystemTrayIcon.ActivationReason.Trigger:
-    #       if self.isVisible():
-    #           self.hide()
-    #       else:
-    #           self.show()
-    #           self.activateWindow()
-
-
     # ############################################################################################ #
 
     def dbug(self, msg: str) -> None:
