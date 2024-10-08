@@ -16,12 +16,12 @@ import sys
 from typing import Optional
 
 import fasteners
-from PySide6.QtCore import QUrl, QFileSystemWatcher
+from PySide6.QtCore import QUrl, QFileSystemWatcher, QStandardPaths, Qt
 from PySide6.QtGui import QAction
 from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEnginePage, QWebEngineSettings
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QSystemTrayIcon, \
-    QMenu
+    QMenu, QFileDialog
 
 from websiteapp.about import About
 from websiteapp.const import Const
@@ -69,6 +69,9 @@ class WebApp(QMainWindow):
         self.profile = QWebEngineProfile(self.args.profile, self)
         self.page = QWebEnginePage(self.profile, self)
 
+        # Handle downloads
+        self.profile.downloadRequested.connect(self.on_download_requested)
+
         self.browser = QWebEngineView(self)
         web_settings = self.browser.settings()
         web_settings.setAttribute(
@@ -76,6 +79,10 @@ class WebApp(QMainWindow):
 
         self.browser.setPage(self.page)
         self.browser.setZoomFactor(self.args.zoom)
+
+        # Ensure the browser widget can receive focus and key events
+        self.browser.setFocusPolicy(Qt.StrongFocus)
+        self.browser.setFocus()
 
         self.dbug(f'URL: {self.args.url}')
         self.browser.setUrl(QUrl(self.args.url))
@@ -254,3 +261,19 @@ class WebApp(QMainWindow):
             window.lock = None
 
         sys.exit(exit_code)
+
+    def on_download_requested(self, download):
+        """
+        Handles file download requests from the web page.
+        """
+        print('on_download_requested')
+        # Prompt the user to select a download location
+        suggested_filename = download.downloadFileName()
+        options = QFileDialog.Options()
+        path, _ = QFileDialog.getSaveFileName(self, "Save File", suggested_filename, options=options)
+        if path:
+            download.setDownloadFileName(os.path.basename(path))
+            download.setDownloadDirectory(os.path.dirname(path))
+            download.accept()
+        else:
+            download.cancel()
