@@ -6,15 +6,25 @@ Run any website as standalone desktop application
 
 ---
 
-Small Python script opening any web page in dedicated window, using embedded QT WebEngine. There are
-no visible browser's UI etc., so the that can be useful to turn any website into standalone desktop
-application. This is useful if you, as me, would like to have a website run as standalone app,
-independently of your main browser which can be beneficial as it gives you separate entry in
-window manager or task switcher etc.
+This Python script offers a unique approach to web browsing by opening any webpage in a dedicated
+window using the embedded QT WebEngine. By removing the typical browser UI elements, it effectively
+turns websites into standalone desktop applications. This can be particularly useful if you've ever
+wished to run a frequently used website as a separate app, independent from your main browser.
 
-> **IMPORTANT:** This tool is **NOT** turning websites into OFFLINE apps! It's about separating
-> each of your key websites i.e. from each other, or gazzilions of your browser's tabs. But you
-> still MUST be connected to the Internet for the apps (websites) to work as previously.
+The tool provides a practical solution for those who find themselves juggling numerous browser tabs
+or wanting a clearer separation between work and personal web applications. With each website
+running as its own "app", you gain the benefit of individual entries in your window manager or task
+switcher, potentially improving your workflow organization and efficiency.
+
+Whether you're looking to streamline your digital workspace or simply curious about alternative
+ways to interact with web content, this script presents an interesting concept that might just
+solve a problem you didn't know you had.
+
+**IMPORTANT:** It's worth pointing out however, that this tool doesn't transform websites into
+offline applications. Rather, it focuses on separating your key websites from each other and from
+the multitude of browser tabs you might typically have open. While this approach offers improved
+organization and workflow, it's crucial to understand that an internet connection is still required
+for these "apps" (websites) to function as they normally would in a traditional browser environment.
 
 ---
 
