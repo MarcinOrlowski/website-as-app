@@ -102,8 +102,6 @@ NOTE: `--zoom` accepts fractional values, so you can use i.e. `--zoom 1.25` to s
 
 ## Current limitations
 
-* Due to security based limitations of embedded `QWebBrowerView` you will not be able
-  to save any file to your local storage nor filesystem.
 * Website's Javascript code cannot write to system clipboard so you might need to manually
   select given portion of the site and copy using function from context menu as any buttons
   on the page that is using JS to write to the host's clipboard will not currently work.
