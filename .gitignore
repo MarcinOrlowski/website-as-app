@@ -4,6 +4,8 @@
 *.bak
 *.swp
 
+/*.sh
+
 
 
 # Linters

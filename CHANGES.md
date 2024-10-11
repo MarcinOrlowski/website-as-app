@@ -4,6 +4,10 @@
 
 ---
 
+* 1.2.0-dev (2024-10-09)
+  * Added support for downloading files.
+  * Added `--version` switch.
+
 * 1.1.1 (2024-10-06)
   * Fixed setup script missing runtime dependency.
 
