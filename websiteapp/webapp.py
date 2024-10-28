@@ -266,12 +266,8 @@ class WebApp(QMainWindow):
         window = WebApp()
 
         if window.args.minimized and window.args.no_tray:
-            print('Cannot use --no-tray and --minimized at the same time.')
-            if window.lock:
-                window.lock.release()
-                window.lock = None
-            app.quit()
-            sys.exit(1)
+            # Cannot use --no-tray and --minimized at the same time. Ignoring --minimized
+            window.args.minimized = False
 
         if not window.args.minimized:
             window.show()

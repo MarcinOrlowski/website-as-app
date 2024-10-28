@@ -7,6 +7,7 @@
 * 1.2.0-dev (2024-10-09)
   * Added support for downloading files.
   * Enabled clipboard access for the embedded browser (so all the "Copy" buttons now work).
+  * If both '--no-tray' and `--minimized` options are given `--minimized` is being ignored.
   * Added `--version` switch.
 
 * 1.1.1 (2024-10-06)
