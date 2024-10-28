@@ -6,10 +6,12 @@ Run any website as standalone desktop application
 
 ---
 
-This Python script offers a unique approach to web browsing by opening any webpage in a dedicated
+This Python package offers a unique approach to web browsing by opening any webpage in a dedicated
 window using the embedded QT WebEngine. By removing the typical browser UI elements, it effectively
 turns websites into standalone desktop applications. This can be particularly useful if you've ever
-wished to run a frequently used website as a separate app, independent from your main browser.
+wished to run a frequently used website as a separate app, independent from your main browser. The
+embedded website can access your clipboard, so all the "Copy" buttons from various generators or
+chats works as expected. You can also upload and download files as you'd in any other application.
 
 The tool provides a practical solution for those who find themselves juggling numerous browser tabs
 or wanting a clearer separation between work and personal web applications. With each website
@@ -28,7 +30,9 @@ for these "apps" (websites) to function as they normally would in a traditional 
 
 ## Installation
 
-I recommend you use [pipx](https://pipx.pypa.io/) to install this tool in isolated environment:
+This is regular Python package and is also hosted on [PyPi](https://pypi.org/project/website-as-app/) so
+you can install it as usual. But because this one is supposed to rather act as the application, I
+strongly recommend to use [pipx](https://pipx.pypa.io/) to install this tool in isolated environment:
 
 ```bash
 $ pipx install website-as-app
@@ -99,12 +103,6 @@ to run on the same profile, use `--allow-multiple` switch.
 
 NOTE: `--zoom` accepts fractional values, so you can use i.e. `--zoom 1.25` to scale content up by
 25% or `--zoom 0.75` to scale down to 75% of the original size.
-
-## Current limitations
-
-* Website's Javascript code cannot write to system clipboard so you might need to manually
-  select given portion of the site and copy using function from context menu as any buttons
-  on the page that is using JS to write to the host's clipboard will not currently work.
 
 ## License
 
