@@ -4,6 +4,9 @@
 
 ---
 
+* 1.3.1 (2024-10-28)
+  * Artificial release to fix isses with PyPy release.
+
 * 1.3.0 (2024-10-28)
   * Enabled clipboard access for the embedded browser (so all the "Copy" buttons now work).
   * If both '--no-tray' and `--minimized` options are given `--minimized` is being ignored.
