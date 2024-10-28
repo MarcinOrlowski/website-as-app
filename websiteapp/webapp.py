@@ -18,10 +18,21 @@ from typing import Optional
 import fasteners
 from PySide6.QtCore import QUrl, QFileSystemWatcher, QStandardPaths, Qt
 from PySide6.QtGui import QAction
-from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEnginePage, QWebEngineSettings
+from PySide6.QtWebEngineCore import (
+    QWebEngineProfile,
+    QWebEngineSettings,
+)
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QSystemTrayIcon, \
-    QMenu, QFileDialog
+from PySide6.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QVBoxLayout,
+    QWidget,
+    QSystemTrayIcon,
+    QMenu,
+    QFileDialog,
+)
+from PySide6.QtWebEngineCore import QWebEnginePage
 
 from websiteapp.about import About
 from websiteapp.const import Const
@@ -69,19 +80,30 @@ class WebApp(QMainWindow):
         self.profile = QWebEngineProfile(self.args.profile, self)
         self.page = QWebEnginePage(self.profile, self)
 
+        # Create and configure the webpage
+        self.page = QWebEnginePage(self.profile, self)
+        # Connect permission request handler
+        self.page.featurePermissionRequested.connect(self.handle_permission_request)
+
         # Handle downloads
         self.profile.downloadRequested.connect(self.on_download_requested)
 
         self.browser = QWebEngineView(self)
         web_settings = self.browser.settings()
-        web_settings.setAttribute(
-            QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
+
+        # Enable all required clipboard permissions
+        web_settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
+        web_settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanPaste, True)
+        web_settings.setAttribute(QWebEngineSettings.WebAttribute.AllowWindowActivationFromJavaScript, True)
+        # Additional profile settings for clipboard
+        self.profile.settings().setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
+        self.profile.settings().setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanPaste, True)
 
         self.browser.setPage(self.page)
         self.browser.setZoomFactor(self.args.zoom)
 
         # Ensure the browser widget can receive focus and key events
-        self.browser.setFocusPolicy(Qt.StrongFocus)
+        self.browser.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.browser.setFocus()
 
         self.dbug(f'URL: {self.args.url}')
@@ -277,3 +299,32 @@ class WebApp(QMainWindow):
             download.accept()
         else:
             download.cancel()
+
+    def handle_permission_request(self, origin, feature):
+        """
+        Handle permission requests from the webpage.
+        """
+        from PySide6.QtWebEngineCore import QWebEnginePage
+
+        self.dbug(f"Permission requested: {feature} from {origin}")
+
+        # Define all clipboard-related features
+        clipboard_features = [
+            QWebEnginePage.Feature.ClipboardReadWrite,
+            QWebEnginePage.Feature.Clipboard,  # For backwards compatibility
+        ]
+
+        if feature in clipboard_features:
+            self.dbug(f"Granting clipboard permission for feature: {feature}")
+            self.page.setFeaturePermission(
+                origin,
+                feature,
+                QWebEnginePage.PermissionPolicy.PermissionGrantedByUser
+            )
+        else:
+            self.dbug(f"Denying permission for feature: {feature}")
+            self.page.setFeaturePermission(
+                origin,
+                feature,
+                QWebEnginePage.PermissionPolicy.PermissionDeniedByUser
+            )

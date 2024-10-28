@@ -6,6 +6,7 @@
 
 * 1.2.0-dev (2024-10-09)
   * Added support for downloading files.
+  * Enabled clipboard access for the embedded browser (so all the "Copy" buttons now work).
   * Added `--version` switch.
 
 * 1.1.1 (2024-10-06)
