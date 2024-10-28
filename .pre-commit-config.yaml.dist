@@ -17,7 +17,7 @@
 #
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       # Prevent giant files from being committed
       - id: check-added-large-files
@@ -39,7 +39,7 @@ repos:
         args: ['--fix=no']
 
   - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.9.0
+    rev: v1.10.0
     hooks:
       # Forbid files which have a UTF-8 Unicode replacement character
       - id: text-unicode-replacement-char
@@ -57,8 +57,11 @@ repos:
       # - id: checkstyle-jar
       # This hook trims trailing whitespace.
       - id: trailing-whitespaces
-        exclude_types: ['xml']
+        exclude_types: ['xml', 'png', 'jpeg', 'svg']
+        exclude: '.*\.(xcf|png|jpg|jpeg|svg)$'
         args: ['--markdown-linebreak-ext=md', '--fix=yes']
       # Ensures that a file is either empty, or ends with one newline
       - id: end-of-file
-        args: ['--fix=yes']
+        exclude_types: ['xml', 'png', 'jpeg', 'svg']
+        exclude: '.*\.(xcf|png|jpg|jpeg|svg)$'
+        args: ['--fix=no']
