@@ -104,6 +104,8 @@ class Utils(object):
                             help='Starts app minimized to system tray.')
         parser.add_argument('--allow-multiple', '-a', action='store_true',
                             help='Allows multiple instances of the app to run on the same profile')
+        parser.add_argument('--no-custom-webengine', action='store_true',
+                            help='Uses built-in QWebEngineView instead of the custom one we use.')
         parser.add_argument('--version', '-v', action='store_true',
                             help='Prints the version of the app and exits')
 

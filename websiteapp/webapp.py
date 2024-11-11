@@ -14,18 +14,18 @@
 ##################################################################################
 """
 import os
-import re
 import sys
 from typing import Optional
 
 import fasteners
-from PySide6.QtCore import QUrl, QFileSystemWatcher, QStandardPaths, Qt
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtCore import QUrl, QFileSystemWatcher, Qt
 from PySide6.QtGui import QAction
+from PySide6.QtWebEngineCore import QWebEnginePage
 from PySide6.QtWebEngineCore import (
     QWebEngineProfile,
     QWebEngineSettings,
 )
-from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -34,9 +34,7 @@ from PySide6.QtWidgets import (
     QSystemTrayIcon,
     QMenu,
     QFileDialog,
-    QMessageBox,
 )
-from PySide6.QtWebEngineCore import QWebEnginePage
 
 from websiteapp.about import About
 from websiteapp.const import Const
@@ -95,7 +93,10 @@ class WebApp(QMainWindow):
 
         # self.browser = QWebEngineView(self)
         # Modified to use CustomWebEngineView
-        self.browser = CustomWebEngineView(self)
+        if self.args.no_custom_webengine:
+            self.browser = QWebEngineView(self)
+        else:
+            self.browser = CustomWebEngineView(self, debug=self.args.debug)
         self.browser.setPage(self.page)
         self.browser.setZoomFactor(self.args.zoom)
 

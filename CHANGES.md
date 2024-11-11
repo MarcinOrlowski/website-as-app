@@ -9,6 +9,7 @@
   * Added custom context menu for the embedded browser.
   * Added `Copy URL` item to the context menu.
   * Added `Open URL from Clipboard` item to the context menu.
+  * Added option to disable custom WebEngine used by the app (if needed).
 
 * 1.3.1 (2024-10-28)
   * Artificial release to fix isses with PyPy release.
