@@ -9,6 +9,8 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
+# @file      websiteapp/const.py
+#
 ##################################################################################
 """
 
@@ -19,7 +21,7 @@ from typing import List
 class Version(Enum):
     MAJOR = 1
     MINOR = 3
-    PATCH = 0
+    PATCH = 1
 
     @classmethod
     def as_string(cls) -> str:

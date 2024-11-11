@@ -9,6 +9,8 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
+# @file      websiteapp/utils.py
+#
 ##################################################################################
 """
 import importlib.resources as pkg_resources

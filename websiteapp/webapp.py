@@ -9,6 +9,8 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
+# @file      websiteapp/webapp.py
+#
 ##################################################################################
 """
 import os
@@ -37,6 +39,45 @@ from PySide6.QtWebEngineCore import QWebEnginePage
 from websiteapp.about import About
 from websiteapp.const import Const
 from websiteapp.utils import Utils
+
+
+class CustomWebEngineView(QWebEngineView):
+    def contextMenuEvent(self, event):
+        # Create a unified context menu
+        menu = QMenu(self)
+
+        # Add default actions to the context menu using WebAction namespace
+        actions = [
+            QWebEnginePage.WebAction.Back,
+            QWebEnginePage.WebAction.Forward,
+            QWebEnginePage.WebAction.Reload,
+            QWebEnginePage.WebAction.Stop,
+            QWebEnginePage.WebAction.Copy,
+            QWebEnginePage.WebAction.Cut,
+            QWebEnginePage.WebAction.Paste,
+            QWebEnginePage.WebAction.SelectAll
+        ]
+
+        for action in actions:
+            q_action = self.pageAction(action)
+            if q_action.isEnabled():  # Only add enabled actions
+                menu.addAction(q_action)
+
+        # Add custom action to copy URL
+        copy_url_action = QAction("Copy URL", self)
+        copy_url_action.triggered.connect(self.copy_url_to_clipboard)
+        menu.addAction(copy_url_action)
+
+        # Display the unified context menu at the cursor position
+        menu.exec(event.globalPos())
+
+    def copy_url_to_clipboard(self):
+        """
+        Copies the current page URL to the clipboard.
+        """
+        current_url = self.url().toString()
+        clipboard = QApplication.clipboard()
+        clipboard.setText(current_url)
 
 
 class WebApp(QMainWindow):
@@ -88,16 +129,25 @@ class WebApp(QMainWindow):
         # Handle downloads
         self.profile.downloadRequested.connect(self.on_download_requested)
 
-        self.browser = QWebEngineView(self)
+        # self.browser = QWebEngineView(self)
+        # Modified to use CustomWebEngineView
+        self.browser = CustomWebEngineView(self)
+        self.browser.setPage(self.page)
+        self.browser.setZoomFactor(self.args.zoom)
+
         web_settings = self.browser.settings()
 
         # Enable all required clipboard permissions
-        web_settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
+        web_settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard,
+                                  True)
         web_settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanPaste, True)
-        web_settings.setAttribute(QWebEngineSettings.WebAttribute.AllowWindowActivationFromJavaScript, True)
+        web_settings.setAttribute(
+            QWebEngineSettings.WebAttribute.AllowWindowActivationFromJavaScript, True)
         # Additional profile settings for clipboard
-        self.profile.settings().setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
-        self.profile.settings().setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanPaste, True)
+        self.profile.settings().setAttribute(
+            QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
+        self.profile.settings().setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanPaste,
+                                             True)
 
         self.browser.setPage(self.page)
         self.browser.setZoomFactor(self.args.zoom)
@@ -288,7 +338,8 @@ class WebApp(QMainWindow):
         # Prompt the user to select a download location
         suggested_filename = download.downloadFileName()
         options = QFileDialog.Options()
-        path, _ = QFileDialog.getSaveFileName(self, "Save File", suggested_filename, options=options)
+        path, _ = QFileDialog.getSaveFileName(self, "Save File", suggested_filename,
+                                              options=options)
         if path:
             download.setDownloadFileName(os.path.basename(path))
             download.setDownloadDirectory(os.path.dirname(path))
