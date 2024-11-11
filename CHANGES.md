@@ -8,6 +8,7 @@
   * Added screenshot and simplified landing page.
   * Added custom context menu for the embedded browser.
   * Added `Copy URL` item to the context menu.
+  * Added `Open URL from Clipboard` item to the context menu.
 
 * 1.3.1 (2024-10-28)
   * Artificial release to fix isses with PyPy release.

@@ -14,6 +14,7 @@
 ##################################################################################
 """
 import os
+import re
 import sys
 from typing import Optional
 
@@ -33,13 +34,13 @@ from PySide6.QtWidgets import (
     QSystemTrayIcon,
     QMenu,
     QFileDialog,
+    QMessageBox,
 )
 from PySide6.QtWebEngineCore import QWebEnginePage
 
 from websiteapp.about import About
 from websiteapp.const import Const
 from websiteapp.utils import Utils
-
 
 class CustomWebEngineView(QWebEngineView):
     def contextMenuEvent(self, event):
@@ -64,9 +65,14 @@ class CustomWebEngineView(QWebEngineView):
                 menu.addAction(q_action)
 
         # Add custom action to copy URL
-        copy_url_action = QAction("Copy URL", self)
+        copy_url_action = QAction("Copy current URL", self)
         copy_url_action.triggered.connect(self.copy_url_to_clipboard)
         menu.addAction(copy_url_action)
+
+        # Add custom action to paste URL
+        paste_url_action = QAction("Open URL from clipboard", self)
+        paste_url_action.triggered.connect(self.open_url_from_clipboard)
+        menu.addAction(paste_url_action)
 
         # Display the unified context menu at the cursor position
         menu.exec(event.globalPos())
@@ -78,6 +84,29 @@ class CustomWebEngineView(QWebEngineView):
         current_url = self.url().toString()
         clipboard = QApplication.clipboard()
         clipboard.setText(current_url)
+
+    def open_url_from_clipboard(self):
+        """
+        Pastes a URL from the clipboard into the web client if valid. Otherwise, shows an error dialog.
+        """
+        clipboard = QApplication.clipboard()
+        clipboard_text = clipboard.text()
+
+        # Regex to validate URL format
+        url_pattern = re.compile(
+            r'^(https?|ftp)://'  # http:// or https:// or ftp://
+            r'(\w+(\-\w+)*\.)+[a-zA-Z]{2,}'  # domain name
+            r'(:\d+)?'  # optional port
+            r'(\/[^\s]*)?$'  # optional path
+        )
+
+        if url_pattern.match(clipboard_text):
+            # Set the valid URL in the web view
+            self.setUrl(clipboard_text)
+        else:
+            # Show a dialog if the URL is not valid
+            QMessageBox.warning(self, "Invalid URL", "No valid URL in clipboard content.")
+
 
 
 class WebApp(QMainWindow):
