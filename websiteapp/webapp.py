@@ -134,7 +134,7 @@ class WebApp(QMainWindow):
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 
-    def acquire_lock(self):
+    def acquire_lock(self) -> bool:
         """
         Acquires a lock for the current profile to prevent multiple instances.
         Returns True if lock was acquired, False otherwise.
@@ -146,7 +146,7 @@ class WebApp(QMainWindow):
             return False
         return True
 
-    def activate_existing_instance(self):
+    def activate_existing_instance(self) -> None:
         """
         Sends a signal to the existing instance to activate its window.
         """
@@ -156,7 +156,7 @@ class WebApp(QMainWindow):
         with open(signal_file, 'w') as f:
             f.write("activate")
 
-    def setup_activation_listener(self):
+    def setup_activation_listener(self) -> None:
         """
         Sets up a file system watcher to listen for activation signals.
         """
@@ -175,7 +175,7 @@ class WebApp(QMainWindow):
             os.remove(signal_file)
             self.activate_window()
 
-    def activate_window(self):
+    def activate_window(self) -> None:
         """
         Brings the window to front and restores it if minimized.
         """
@@ -295,7 +295,7 @@ class WebApp(QMainWindow):
 
         sys.exit(exit_code)
 
-    def on_download_requested(self, download):
+    def on_download_requested(self, download) -> None:
         """
         Handles file download requests from the web page.
         """
@@ -312,7 +312,7 @@ class WebApp(QMainWindow):
         else:
             download.cancel()
 
-    def handle_permission_request(self, origin, feature):
+    def handle_permission_request(self, origin, feature) -> None:
         """
         Handle permission requests from the webpage.
         """
