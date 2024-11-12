@@ -90,7 +90,6 @@ typically have open. While this approach offers improved organization and workfl
 to understand that an internet connection is still required for these "apps" (websites) to function
 as they normally would in a traditional browser environment.
 
-
 ## License
 
 * Written and copyrighted &copy;2023-2024 by Marcin Orlowski <mail (#) marcinorlowski (.) com>
