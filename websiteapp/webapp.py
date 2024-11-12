@@ -9,6 +9,8 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
+# @file      websiteapp/webapp.py
+#
 ##################################################################################
 """
 import os
@@ -16,13 +18,14 @@ import sys
 from typing import Optional
 
 import fasteners
-from PySide6.QtCore import QUrl, QFileSystemWatcher, QStandardPaths, Qt
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtCore import QUrl, QFileSystemWatcher, Qt
 from PySide6.QtGui import QAction
+from PySide6.QtWebEngineCore import QWebEnginePage
 from PySide6.QtWebEngineCore import (
     QWebEngineProfile,
     QWebEngineSettings,
 )
-from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (
     QApplication,
     QMainWindow,
@@ -32,11 +35,11 @@ from PySide6.QtWidgets import (
     QMenu,
     QFileDialog,
 )
-from PySide6.QtWebEngineCore import QWebEnginePage
 
 from websiteapp.about import About
 from websiteapp.const import Const
 from websiteapp.utils import Utils
+from websiteapp.webengine import CustomWebEngineView
 
 
 class WebApp(QMainWindow):
@@ -88,16 +91,28 @@ class WebApp(QMainWindow):
         # Handle downloads
         self.profile.downloadRequested.connect(self.on_download_requested)
 
-        self.browser = QWebEngineView(self)
+        # self.browser = QWebEngineView(self)
+        # Modified to use CustomWebEngineView
+        if self.args.no_custom_webengine:
+            self.browser = QWebEngineView(self)
+        else:
+            self.browser = CustomWebEngineView(self, debug=self.args.debug)
+        self.browser.setPage(self.page)
+        self.browser.setZoomFactor(self.args.zoom)
+
         web_settings = self.browser.settings()
 
         # Enable all required clipboard permissions
-        web_settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
+        web_settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard,
+                                  True)
         web_settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanPaste, True)
-        web_settings.setAttribute(QWebEngineSettings.WebAttribute.AllowWindowActivationFromJavaScript, True)
+        web_settings.setAttribute(
+            QWebEngineSettings.WebAttribute.AllowWindowActivationFromJavaScript, True)
         # Additional profile settings for clipboard
-        self.profile.settings().setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
-        self.profile.settings().setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanPaste, True)
+        self.profile.settings().setAttribute(
+            QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
+        self.profile.settings().setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanPaste,
+                                             True)
 
         self.browser.setPage(self.page)
         self.browser.setZoomFactor(self.args.zoom)
@@ -119,7 +134,7 @@ class WebApp(QMainWindow):
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 
-    def acquire_lock(self):
+    def acquire_lock(self) -> bool:
         """
         Acquires a lock for the current profile to prevent multiple instances.
         Returns True if lock was acquired, False otherwise.
@@ -131,7 +146,7 @@ class WebApp(QMainWindow):
             return False
         return True
 
-    def activate_existing_instance(self):
+    def activate_existing_instance(self) -> None:
         """
         Sends a signal to the existing instance to activate its window.
         """
@@ -141,7 +156,7 @@ class WebApp(QMainWindow):
         with open(signal_file, 'w') as f:
             f.write("activate")
 
-    def setup_activation_listener(self):
+    def setup_activation_listener(self) -> None:
         """
         Sets up a file system watcher to listen for activation signals.
         """
@@ -160,7 +175,7 @@ class WebApp(QMainWindow):
             os.remove(signal_file)
             self.activate_window()
 
-    def activate_window(self):
+    def activate_window(self) -> None:
         """
         Brings the window to front and restores it if minimized.
         """
@@ -280,7 +295,7 @@ class WebApp(QMainWindow):
 
         sys.exit(exit_code)
 
-    def on_download_requested(self, download):
+    def on_download_requested(self, download) -> None:
         """
         Handles file download requests from the web page.
         """
@@ -288,7 +303,8 @@ class WebApp(QMainWindow):
         # Prompt the user to select a download location
         suggested_filename = download.downloadFileName()
         options = QFileDialog.Options()
-        path, _ = QFileDialog.getSaveFileName(self, "Save File", suggested_filename, options=options)
+        path, _ = QFileDialog.getSaveFileName(self, "Save File", suggested_filename,
+                                              options=options)
         if path:
             download.setDownloadFileName(os.path.basename(path))
             download.setDownloadDirectory(os.path.dirname(path))
@@ -296,7 +312,7 @@ class WebApp(QMainWindow):
         else:
             download.cancel()
 
-    def handle_permission_request(self, origin, feature):
+    def handle_permission_request(self, origin, feature) -> None:
         """
         Handle permission requests from the webpage.
         """

@@ -11,6 +11,8 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
+# @file      setup.py
+#
 #####
 #
 # https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html
