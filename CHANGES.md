@@ -4,7 +4,7 @@
 
 ---
 
-* @dev
+* 1.4.0 (2024-11-12)
   * Added screenshot and simplified landing page.
   * Added custom context menu for the embedded browser.
   * Added `Copy URL` item to the context menu.
