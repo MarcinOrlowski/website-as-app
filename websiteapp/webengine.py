@@ -17,10 +17,13 @@
 # Target file: websiteapp/custom_web_view.py
 
 import re
+
 from PySide6.QtWidgets import QMenu, QApplication, QMessageBox
-from PySide6.QtGui import QAction
+from PySide6.QtGui import QAction, QWheelEvent
 from PySide6.QtWebEngineCore import QWebEnginePage
 from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtCore import Qt
+
 
 class CustomWebEngineView(QWebEngineView):
     def __init__(self, parent=None, debug=False):
@@ -31,6 +34,13 @@ class CustomWebEngineView(QWebEngineView):
         # Connect load progress to determine loading status
         self.loadStarted.connect(self.on_load_started)
         self.loadFinished.connect(self.on_load_finished)
+
+        # Set minimum/maximum zoom factors to prevent extreme zooming
+        self._min_zoom = 0.25
+        self._max_zoom = 5.0
+
+        # Store current zoom factor
+        self._current_zoom = 1.0
 
     def on_load_started(self):
         """
@@ -43,6 +53,34 @@ class CustomWebEngineView(QWebEngineView):
         Slot called when page load finishes.
         """
         self.loading = False
+
+    def wheelEvent(self, event: QWheelEvent) -> None:
+        """
+        Handle mouse wheel events for both scrolling and zooming.
+
+        Args:
+            event (QWheelEvent): The wheel event containing scroll information
+        """
+        modifiers = QApplication.keyboardModifiers()
+
+        if modifiers & Qt.KeyboardModifier.ControlModifier:
+            # Handle zooming with Ctrl+wheel
+            delta = event.angleDelta().y()
+            if delta > 0:
+                # Zoom in
+                new_zoom = min(self._current_zoom * 1.1, self._max_zoom)
+            else:
+                # Zoom out
+                new_zoom = max(self._current_zoom / 1.1, self._min_zoom)
+
+            if new_zoom != self._current_zoom:
+                self._current_zoom = new_zoom
+                self.setZoomFactor(self._current_zoom)
+
+            event.accept()
+        else:
+            # Regular scrolling - pass the event to the parent class
+            super().wheelEvent(event)
 
     def contextMenuEvent(self, event):
         menu = QMenu(self)

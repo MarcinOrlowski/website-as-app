@@ -4,6 +4,10 @@
 
 ---
 
+* @dev
+  * Added support for mouse wheel scrolling
+  * Added support for page zooming with `CTRL`+mouse wheel
+
 * 1.4.0 (2024-11-12)
   * Added screenshot and simplified landing page.
   * Added custom context menu for the embedded browser.
