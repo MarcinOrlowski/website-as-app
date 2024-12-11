@@ -4,6 +4,12 @@
 
 ---
 
+* 1.5.0 (2024-12-11)
+  * Added support for mouse wheel scrolling.
+  * Added support for page zooming with `CTRL` + mouse wheel.
+  * Added search toolbar (`CTRL`+`F`).
+  * Added option to control search toolbar placement (top/bottom) with `--search-position`.
+
 * 1.4.0 (2024-11-12)
   * Added screenshot and simplified landing page.
   * Added custom context menu for the embedded browser.

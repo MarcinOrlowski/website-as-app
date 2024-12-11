@@ -13,12 +13,12 @@
 #
 ##################################################################################
 """
+import argparse
 import importlib.resources as pkg_resources
 import os
 import re
 from typing import Optional
 
-import argparse
 from PySide6.QtGui import QIcon
 
 
@@ -106,6 +106,9 @@ class Utils(object):
                             help='Allows multiple instances of the app to run on the same profile')
         parser.add_argument('--no-custom-webengine', action='store_true',
                             help='Uses built-in QWebEngineView instead of the custom one we use.')
+        parser.add_argument('--search-top', action='store_true',
+                            help='Puts search bar on top of window when activated')
+
         parser.add_argument('--version', '-v', action='store_true',
                             help='Prints the version of the app and exits')
 

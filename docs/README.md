@@ -8,9 +8,11 @@ Run any website as standalone desktop application
 
 ## Installation
 
-This is regular Python package and is also hosted on [PyPi](https://pypi.org/project/website-as-app/) so
+This is regular Python package and is also hosted
+on [PyPi](https://pypi.org/project/website-as-app/) so
 you can install it as usual. But because this one is supposed to rather act as the application, I
-strongly recommend to use [pipx](https://pipx.pypa.io/) to install this tool in isolated environment:
+strongly recommend to use [pipx](https://pipx.pypa.io/) to install this tool in isolated
+environment:
 
 ```bash
 $ pipx install website-as-app
@@ -52,6 +54,10 @@ Available options:
 webapp -h
 usage: webapp [--profile PROFILE] [--name NAME] [--icon ICON] [--zoom ZOOM] [--no-tray] url
 
+usage: webapp [--profile PROFILE] [--name NAME] [--icon ICON] [--geometry GEOMETRY]
+              [--zoom ZOOM] [--no-tray] [--minimized] [--allow-multiple]
+              [--no-custom-webengine] [--search-top] [--version] [--debug] url
+
 Open any website in standalone window (like it's an app)
 
 positional arguments:
@@ -66,6 +72,8 @@ options:
 --no-tray, -t                     Disables docking app in system tray (closing window quits app)
 --minimized, -m                   Starts app minimized to system tray.
 --allow-multiple, -a              Allows multiple instances of the app to run on the same profile
+--no-custom-webengine             Uses built-in QWebEngineView instead of the custom one we use.
+--search-top                      Puts search bar on top of window when activated
 --debug, -d                       Makes app print more debug messages during execution
 ```
 
@@ -81,6 +89,10 @@ to run on the same profile, use `--allow-multiple` switch.
 
 NOTE: `--zoom` accepts fractional values, so you can use i.e. `--zoom 1.25` to scale content up by
 25% or `--zoom 0.75` to scale down to 75% of the original size.
+
+## Keyboard shortcuts
+
+* `CTRL` + `F` - opens search bar (close with `ESC` or toolbar's button).
 
 ## Notes
 
