@@ -4,7 +4,7 @@
 
 ---
 
-* @dev
+* 1.5.0 (2024-12-11)
   * Added support for mouse wheel scrolling.
   * Added support for page zooming with `CTRL` + mouse wheel.
   * Added search toolbar (`CTRL`+`F`).

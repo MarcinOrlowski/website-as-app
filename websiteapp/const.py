@@ -20,7 +20,7 @@ from typing import List
 
 class Version(Enum):
     MAJOR = 1
-    MINOR = 4
+    MINOR = 5
     PATCH = 0
 
     @classmethod
