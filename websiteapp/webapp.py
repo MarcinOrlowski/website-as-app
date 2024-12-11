@@ -137,9 +137,7 @@ class WebApp(QMainWindow):
 
         self.search_toolbar = SearchToolBar.setup_for_window(self)
 
-        search_position = (SearchBarPosition.BOTTOM
-                           if self.args.search_position == 'bottom'
-                           else SearchBarPosition.TOP)
+        search_position = SearchBarPosition.TOP if self.args.search_top else SearchBarPosition.BOTTOM
         self.search_toolbar = SearchToolBar.setup_for_window(self, position=search_position)
 
     def acquire_lock(self) -> bool:
