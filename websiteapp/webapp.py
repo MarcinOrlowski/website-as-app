@@ -38,6 +38,7 @@ from PySide6.QtWidgets import (
 
 from websiteapp.about import About
 from websiteapp.const import Const
+from websiteapp.toolbar import SearchToolBar, SearchBarPosition
 from websiteapp.utils import Utils
 from websiteapp.webengine import CustomWebEngineView
 
@@ -133,6 +134,13 @@ class WebApp(QMainWindow):
         central_widget = QWidget()
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
+
+        self.search_toolbar = SearchToolBar.setup_for_window(self)
+
+        search_position = (SearchBarPosition.BOTTOM
+                           if self.args.search_position == 'bottom'
+                           else SearchBarPosition.TOP)
+        self.search_toolbar = SearchToolBar.setup_for_window(self, position=search_position)
 
     def acquire_lock(self) -> bool:
         """
