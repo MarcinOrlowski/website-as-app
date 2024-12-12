@@ -135,10 +135,12 @@ class WebApp(QMainWindow):
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 
-        self.search_toolbar = SearchToolBar.setup_for_window(self)
-
+        # Setup search toolbar
         search_position = SearchBarPosition.TOP if self.args.search_top else SearchBarPosition.BOTTOM
         self.search_toolbar = SearchToolBar.setup_for_window(self, position=search_position)
+        # Add this line to connect the search toolbar to the CustomWebEngineView
+        if not self.args.no_custom_webengine:
+            self.browser.set_search_toolbar(self.search_toolbar)
 
     def acquire_lock(self) -> bool:
         """

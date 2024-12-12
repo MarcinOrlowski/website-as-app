@@ -4,6 +4,9 @@
 
 ---
 
+* 1.5.1 (2024-12-12)
+  * Added `Find in Page…` entry to the context menu.
+
 * 1.5.0 (2024-12-11)
   * Added support for mouse wheel scrolling.
   * Added support for page zooming with `CTRL` + mouse wheel.
