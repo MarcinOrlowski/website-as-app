@@ -30,6 +30,7 @@ class CustomWebEngineView(QWebEngineView):
         super().__init__(parent)
         self.debug = debug  # Store the debug flag to conditionally add the dump action
         self.loading = False  # Keep track of whether a page is loading
+        self.search_toolbar = None  # Reference to search toolbar
 
         # Connect load progress to determine loading status
         self.loadStarted.connect(self.on_load_started)
@@ -41,6 +42,15 @@ class CustomWebEngineView(QWebEngineView):
 
         # Store current zoom factor
         self._current_zoom = 1.0
+
+    def set_search_toolbar(self, toolbar):
+        """
+        Set the reference to the search toolbar.
+
+        Args:
+            toolbar: The SearchToolBar instance to be used
+        """
+        self.search_toolbar = toolbar
 
     def on_load_started(self):
         """
@@ -115,6 +125,11 @@ class CustomWebEngineView(QWebEngineView):
             # if q_action.isEnabled():  # Only add enabled actions
             menu.addAction(q_action)
 
+        # Add "Find in Page" action
+        find_action = QAction("Find in Page…", self)
+        find_action.triggered.connect(self.show_find_dialog)
+        menu.addAction(find_action)
+
         # Add custom action to copy URL
         copy_url_action = QAction("Copy Current URL", self)
         copy_url_action.triggered.connect(self.copy_url_to_clipboard)
@@ -145,6 +160,13 @@ class CustomWebEngineView(QWebEngineView):
 
         # Display the unified context menu at the cursor position
         menu.exec(event.globalPos())
+
+    def show_find_dialog(self):
+        """
+        Show the search toolbar when Find in Page is selected.
+        """
+        if self.search_toolbar:
+            self.search_toolbar.show_search()
 
     def copy_url_to_clipboard(self):
         """
