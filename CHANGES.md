@@ -4,6 +4,9 @@
 
 ---
 
+* 1.6.0 (2024-12-16)
+  * Spoofed `User-Agent` string to make WhatsApp website work.
+
 * 1.5.1 (2024-12-12)
   * Added `Find in Page…` entry to the context menu.
 
