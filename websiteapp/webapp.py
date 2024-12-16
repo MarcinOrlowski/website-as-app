@@ -84,6 +84,12 @@ class WebApp(QMainWindow):
         self.profile = QWebEngineProfile(self.args.profile, self)
         self.page = QWebEnginePage(self.profile, self)
 
+        # Set Chrome-like user agent
+        chrome_version = "115.0.5790.170"  # Using a recent stable Chrome version
+        webkit_version = "537.36"  # WebKit version used by Chrome
+        user_agent = f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/{webkit_version} (KHTML, like Gecko) Chrome/{chrome_version} Safari/{webkit_version}"
+        self.agent = self.profile.setHttpUserAgent(user_agent)
+
         # Create and configure the webpage
         self.page = QWebEnginePage(self.profile, self)
         # Connect permission request handler
@@ -92,7 +98,6 @@ class WebApp(QMainWindow):
         # Handle downloads
         self.profile.downloadRequested.connect(self.on_download_requested)
 
-        # self.browser = QWebEngineView(self)
         # Modified to use CustomWebEngineView
         if self.args.no_custom_webengine:
             self.browser = QWebEngineView(self)
