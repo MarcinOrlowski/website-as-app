@@ -77,13 +77,18 @@ options:
 --debug, -d                       Makes app print more debug messages during execution
 ```
 
+**IMPORTANT**: When using arguments that contain spaces (i.e. for `--name` argument), you **must** use single quotes
+around the value, as double quotes may not work correctly in some shells causing runtime errors.
+For example `--name 'My App'` is correct, while `--name "My App"` may not work as expected because
+of shell splitting the value into two separate arguments prior to passing them to the app.
+
 The most important option is `--profile` which allows you to isolate cookies and app settings
 per instance. Any instance using the same profile will have access to the same cookies and
 settings. This is useful if you want to run multiple instances of the same app, but with
 different accounts. By default `default` profile is used and it's recommended to use different
 profile per each app instance.
 
-By default only one instance per profile is allowed to run (attempt to run second instance
+By default, only one instance per profile is allowed to run (attempt to run second instance
 will bring the first one to the front). If you want to allow multiple instances of the app
 to run on the same profile, use `--allow-multiple` switch.
 
