@@ -14,6 +14,7 @@
 ##################################################################################
 """
 import os
+import re
 import sys
 from typing import Optional
 
@@ -80,9 +81,12 @@ class WebApp(QMainWindow):
         self.setWindowTitle(f'{window_title} · {Const.APP_NAME}')
 
         # Create a persistent profile (cookie jar etc.)
-        self.dbug(f'Profile: {self.args.profile}')
         self.profile = QWebEngineProfile(self.args.profile, self)
         self.page = QWebEnginePage(self.profile, self)
+
+        self.dbug(f'Profile: {self.args.profile}')
+        self.dbug(f'Cache path: {self.profile.cachePath()}')
+        self.dbug(f'Persistent storage: {self.profile.persistentStoragePath()}')
 
         # Set Chrome-like user agent
         chrome_version = "115.0.5790.170"  # Using a recent stable Chrome version
