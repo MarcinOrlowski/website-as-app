@@ -21,7 +21,7 @@ from typing import List
 class Version(Enum):
     MAJOR = 1
     MINOR = 6
-    PATCH = 1
+    PATCH = 2
 
     @classmethod
     def as_string(cls) -> str:

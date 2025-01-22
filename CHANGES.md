@@ -4,6 +4,10 @@
 
 ---
 
+* 1.6.2 (2025-01-22)
+  * Reverset fix for spaces in arguments as incorrect.
+  * Updated docs.
+
 * 1.6.1 (2025-01-22)
   * Fixed handling of arguments using spaces (i.e. `--name="foo bar").
   * Lock file name is now based on the sanitized profile name.
