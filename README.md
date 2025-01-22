@@ -33,6 +33,6 @@ quickly install and start using this tool.
 
 ## License
 
-* Written and copyrighted &copy;2023-2024 by Marcin Orlowski <mail (#) marcinorlowski (.) com>
+* Written and copyrighted &copy;2023-2025 by Marcin Orlowski <mail (#) marcinorlowski (.) com>
 * ResponseBuilder is open-sourced software licensed under
   the [MIT license](http://opensource.org/licenses/MIT)

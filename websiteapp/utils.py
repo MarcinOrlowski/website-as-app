@@ -5,7 +5,7 @@
 # Run any website as standalone desktop application
 #
 # @author    Marcin Orlowski <mail (#) marcinOrlowski (.) com>
-# @copyright 2023-2024 Marcin Orlowski
+# @copyright 2023-2025 Marcin Orlowski
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
@@ -17,6 +17,8 @@ import argparse
 import importlib.resources as pkg_resources
 import os
 import re
+import sys
+import shlex
 from typing import Optional
 
 from PySide6.QtGui import QIcon
@@ -50,7 +52,7 @@ class Utils(object):
 
         :param geometry_string: A string representing the geometry in the format WIDTHxHEIGHT+X+Y.
 
-        :return: A tuple containing the x, y,  width and height values.
+        :return: A tuple containing the x, y, width and height values.
         :raises ValueError: If the geometry string format is incorrect.
         """
         match = re.search(r'^(\d+)x(\d+)\+(\d+)\+(\d+)$', geometry_string)
@@ -80,8 +82,14 @@ class Utils(object):
 
         :return: The parsed command line arguments.
         """
-        parser = argparse.ArgumentParser(
-            description="Open any website in standalone window (like it's an app)")
+        class CustomArgumentParser(argparse.ArgumentParser):
+            def convert_arg_line_to_args(self, arg_line):
+                return shlex.split(arg_line, comments=True)
+
+        parser = CustomArgumentParser(
+            description="Open any website in standalone window (like it's an app)",
+            fromfile_prefix_chars='@')
+
         parser.add_argument('url', type=str, help='The URL to open')
 
         parser.add_argument('--profile', '-p', type=str, default='default',
@@ -115,4 +123,16 @@ class Utils(object):
         parser.add_argument('--debug', '-d', action='store_true',
                             help='Makes app print more debug messages during execution')
 
-        return parser.parse_args()
+        # We will use shlex module to properly parse sys.argv while respecting quoted arguments
+        # like i.e. `--name="foo bar" as single value string.
+        argv = sys.argv[1:]
+        if argv:
+            # Join all arguments into a single string and then split properly with shlex
+            # This preserves quoted arguments as user expected.
+            full_cmd = ' '.join(argv)
+            try:
+                argv = shlex.split(full_cmd)
+            except ValueError as e:
+                parser.error(f"Error parsing arguments: {str(e)}")
+
+        return parser.parse_args(argv)

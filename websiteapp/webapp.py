@@ -5,7 +5,7 @@
 # Run any website as standalone desktop application
 #
 # @author    Marcin Orlowski <mail (#) marcinOrlowski (.) com>
-# @copyright 2023-2024 Marcin Orlowski
+# @copyright 2023-2025 Marcin Orlowski
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
@@ -14,6 +14,7 @@
 ##################################################################################
 """
 import os
+import re
 import sys
 from typing import Optional
 
@@ -80,9 +81,12 @@ class WebApp(QMainWindow):
         self.setWindowTitle(f'{window_title} · {Const.APP_NAME}')
 
         # Create a persistent profile (cookie jar etc.)
-        self.dbug(f'Profile: {self.args.profile}')
         self.profile = QWebEngineProfile(self.args.profile, self)
         self.page = QWebEnginePage(self.profile, self)
+
+        self.dbug(f'Profile: {self.args.profile}')
+        self.dbug(f'Cache path: {self.profile.cachePath()}')
+        self.dbug(f'Persistent storage: {self.profile.persistentStoragePath()}')
 
         # Set Chrome-like user agent
         chrome_version = "115.0.5790.170"  # Using a recent stable Chrome version
@@ -152,12 +156,35 @@ class WebApp(QMainWindow):
         Acquires a lock for the current profile to prevent multiple instances.
         Returns True if lock was acquired, False otherwise.
         """
-        lock_file = os.path.join(os.path.expanduser("~"), f".websiteapp_{self.args.profile}.lock")
+        sanitized_profile = self.sanitize_profile_name(self.args.profile)
+        lock_file = os.path.join(os.path.expanduser("~"), f".websiteapp_{sanitized_profile}.lock")
         self.lock = fasteners.InterProcessLock(lock_file)
         if not self.lock.acquire(blocking=False):
             self.activate_existing_instance()
             return False
         return True
+
+    def sanitize_profile_name(self, profile_name: str) -> str:
+        """
+        Sanitizes the profile name to ensure it can be used as a valid file path.
+
+        Args:
+            profile_name (str): The profile name to sanitize.
+
+        Returns:
+            str: A sanitized version of the profile name suitable for file paths.
+        """
+        # Replace invalid characters with underscores
+        sanitized = re.sub(r'[\\/:*?"<>|]', '_', profile_name)
+
+        # Trim leading/trailing whitespace and ensure it's not empty
+        sanitized = sanitized.strip()
+
+        # Fallback to a default name if the sanitized profile is empty
+        if not sanitized:
+            sanitized = "default_profile"
+
+        return sanitized
 
     def activate_existing_instance(self) -> None:
         """
