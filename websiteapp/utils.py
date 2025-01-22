@@ -17,8 +17,6 @@ import argparse
 import importlib.resources as pkg_resources
 import os
 import re
-import sys
-import shlex
 from typing import Optional
 
 from PySide6.QtGui import QIcon
@@ -80,15 +78,14 @@ class Utils(object):
         Create an argument parser to handle command line arguments for opening a website in a
         standalone window.
 
+        Note: When using --name with spaces, wrap the value in single quotes:
+            --name='My App Name'
+        Using double quotes may not work correctly in some shells.
+
         :return: The parsed command line arguments.
         """
-        class CustomArgumentParser(argparse.ArgumentParser):
-            def convert_arg_line_to_args(self, arg_line):
-                return shlex.split(arg_line, comments=True)
-
-        parser = CustomArgumentParser(
-            description="Open any website in standalone window (like it's an app)",
-            fromfile_prefix_chars='@')
+        parser = argparse.ArgumentParser(
+            description="Open any website in standalone window (like it's an app)")
 
         parser.add_argument('url', type=str, help='The URL to open')
 
@@ -98,7 +95,7 @@ class Utils(object):
         # Can't use "title" as it is swallowed by QT and used for window title which cannot be later
         # changed. So we use "name" instead.
         parser.add_argument('--name', '-n', type=str, default=None,
-                            help='Application name (shown as window title)')
+                            help="Application name (shown as window title). Use single quotes for names with spaces: --name='My App'")
 
         parser.add_argument('--icon', '-i', type=str, default=None,
                             help='Full path to PNG image file to be used as app icon')
@@ -123,16 +120,4 @@ class Utils(object):
         parser.add_argument('--debug', '-d', action='store_true',
                             help='Makes app print more debug messages during execution')
 
-        # We will use shlex module to properly parse sys.argv while respecting quoted arguments
-        # like i.e. `--name="foo bar" as single value string.
-        argv = sys.argv[1:]
-        if argv:
-            # Join all arguments into a single string and then split properly with shlex
-            # This preserves quoted arguments as user expected.
-            full_cmd = ' '.join(argv)
-            try:
-                argv = shlex.split(full_cmd)
-            except ValueError as e:
-                parser.error(f"Error parsing arguments: {str(e)}")
-
-        return parser.parse_args(argv)
+        return parser.parse_args()
