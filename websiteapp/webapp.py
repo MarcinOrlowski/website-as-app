@@ -152,12 +152,35 @@ class WebApp(QMainWindow):
         Acquires a lock for the current profile to prevent multiple instances.
         Returns True if lock was acquired, False otherwise.
         """
-        lock_file = os.path.join(os.path.expanduser("~"), f".websiteapp_{self.args.profile}.lock")
+        sanitized_profile = self.sanitize_profile_name(self.args.profile)
+        lock_file = os.path.join(os.path.expanduser("~"), f".websiteapp_{sanitized_profile}.lock")
         self.lock = fasteners.InterProcessLock(lock_file)
         if not self.lock.acquire(blocking=False):
             self.activate_existing_instance()
             return False
         return True
+
+    def sanitize_profile_name(self, profile_name: str) -> str:
+        """
+        Sanitizes the profile name to ensure it can be used as a valid file path.
+
+        Args:
+            profile_name (str): The profile name to sanitize.
+
+        Returns:
+            str: A sanitized version of the profile name suitable for file paths.
+        """
+        # Replace invalid characters with underscores
+        sanitized = re.sub(r'[\\/:*?"<>|]', '_', profile_name)
+
+        # Trim leading/trailing whitespace and ensure it's not empty
+        sanitized = sanitized.strip()
+
+        # Fallback to a default name if the sanitized profile is empty
+        if not sanitized:
+            sanitized = "default_profile"
+
+        return sanitized
 
     def activate_existing_instance(self) -> None:
         """
