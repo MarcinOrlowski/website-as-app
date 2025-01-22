@@ -4,6 +4,10 @@
 
 ---
 
+* 1.6.1 (2025-01-22)
+  * Fixed handling of arguments using spaces (i.e. `--name="foo bar").
+  * Lock file name is now based on the sanitized profile name.
+
 * 1.6.0 (2024-12-16)
   * Spoofed `User-Agent` string to make WhatsApp website work.
 
