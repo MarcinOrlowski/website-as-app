@@ -4,8 +4,12 @@
 
 ---
 
+* 1.7.0 (2025-01-23)
+  * Tray icon now shows `--name` value as its tooltip when set.
+  * The `extras/website.sh` helper script now handles arguments with spaces correctly.
+
 * 1.6.2 (2025-01-22)
-  * Reverset fix for spaces in arguments as incorrect.
+  * Reversed fix for spaces in arguments as incorrect.
   * Updated docs.
 
 * 1.6.1 (2025-01-22)

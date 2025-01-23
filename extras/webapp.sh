@@ -31,7 +31,7 @@ function runWebAppInVenv {
     ACTIVATED_VENV="YES"
   fi
 
-  webapp $@
+  webapp "$@"
 
   if [[ "${ACTIVATED_VENV:-}" == "YES" ]]; then
     deactivate
@@ -40,4 +40,4 @@ function runWebAppInVenv {
   popd > /dev/null
 }
 
-runWebAppInVenv $@
+runWebAppInVenv "$@"
