@@ -4,6 +4,9 @@
 
 ---
 
+* 1.7.0 (2025-01-23)
+  * Tray icon now shows `--name` value as its tooltip when set.
+
 * 1.6.2 (2025-01-22)
   * Reverset fix for spaces in arguments as incorrect.
   * Updated docs.

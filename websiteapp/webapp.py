@@ -247,6 +247,9 @@ class WebApp(QMainWindow):
         tray_menu = QMenu()
 
         tray_icon = QSystemTrayIcon(icon, self.app)
+        # Set custom tooltip if name is provided
+        tooltip = self.args.name if self.args.name else Const.APP_NAME
+        tray_icon.setToolTip(tooltip)
         tray_icon.setContextMenu(tray_menu)
         tray_icon.activated.connect(self.on_tray_icon_activated)
 
