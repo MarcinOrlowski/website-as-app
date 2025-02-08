@@ -97,14 +97,14 @@ class Utils(object):
         # Can't use "title" as it is swallowed by QT and used for window title which cannot be later
         # changed. So we use "name" instead.
         parser.add_argument('--name', '-n', type=str, default=None,
-                            help="Application name (shown as window title). Use single quotes for names with spaces: --name='My App'")
+                            help=f"Application name (shown as window title). Use single quotes for names with spaces: --name='My App'. Default: '{Const.APP_NAME}'")
 
         parser.add_argument('--icon', '-i', type=str, default=None,
-                            help='Full path to PNG image file to be used as app icon')
+                            help='Full path to PNG image file to be used as custom app icon')
         parser.add_argument('--geometry', '-g', type=str, default='450x600+0+0',
                             help='Initial window ("WIDTHxHEIGHT+X+Y"). Default: "%(default)s"')
         parser.add_argument('--zoom', '-z', type=float, default="1.0",
-                            help='WebView scale. Default: %(default)s (no scale change).')
+                            help='WebView scale (1.0 means no scale change). Default: %(default)s')
         parser.add_argument('--no-tray', '-t', action='store_true',
                             help='Disables docking app in system tray (closing window quits app)')
         parser.add_argument('--minimized', '-m', action='store_true',
@@ -115,7 +115,6 @@ class Utils(object):
                             help='Uses built-in QWebEngineView instead of the custom one we use.')
         parser.add_argument('--search-top', action='store_true',
                             help='Puts search bar on top of window when activated')
-
         parser.add_argument('--user-agent', '-u', type=str, default=Const.APP_USER_AGENT,
                             help='User-Agent string to use (default: "%(default)s")')
 

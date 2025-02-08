@@ -67,9 +67,9 @@ url                   The URL to open
 options:
 --profile PROFILE, -p PROFILE     Profile name (for cookies isolation etc). Default: "default"
 --name NAME, -n NAME              Application name (shown as window title)
---icon ICON, -i ICON              Full path to PNG image file to be used as app icon
+--icon ICON, -i ICON              Full path to PNG image file to be used as custom app icon
 --geometry GEOMETRY, -g GEOMETRY  Initial window ("WIDTHxHEIGHT+X+Y"). Default: "450x600+0+0"
---zoom ZOOM, -z ZOOM              WebView scale. Default: 1.0 (no scale change).
+--zoom ZOOM, -z ZOOM              WebView scale (1.0 means no scale change). Default: 1.0
 --no-tray, -t                     Disables docking app in system tray (closing window quits app)
 --minimized, -m                   Starts app minimized to system tray.
 --allow-multiple, -a              Allows multiple instances of the app to run on the same profile
