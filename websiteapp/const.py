@@ -34,7 +34,7 @@ class Const(object):
     APP_VERSION: str = Version.as_string()
     APP_URL: str = 'https://github.com/MarcinOrlowski/website-as-app/'
     APP_DESCRIPTION: str = 'Opens any web site as standalone desktop app.'
-    APP_YEAR: int = 2024
+    APP_YEAR: int = 2025
 
     APP_DESCRIPTION: List[str] = [
         f'{APP_NAME} v{APP_VERSION} * Copyright 2023-{APP_YEAR} by Marcin Orlowski.',
