@@ -21,6 +21,8 @@ from typing import Optional
 
 from PySide6.QtGui import QIcon
 
+from websiteapp.const import Const
+
 
 class Utils(object):
     @staticmethod
@@ -113,6 +115,9 @@ class Utils(object):
                             help='Uses built-in QWebEngineView instead of the custom one we use.')
         parser.add_argument('--search-top', action='store_true',
                             help='Puts search bar on top of window when activated')
+
+        parser.add_argument('--user-agent', '-u', type=str, default=Const.APP_USER_AGENT,
+                            help='User-Agent string to use (default: "%(default)s")')
 
         parser.add_argument('--version', '-v', action='store_true',
                             help='Prints the version of the app and exits')

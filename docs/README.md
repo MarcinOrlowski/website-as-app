@@ -74,6 +74,7 @@ options:
 --allow-multiple, -a              Allows multiple instances of the app to run on the same profile
 --no-custom-webengine             Uses built-in QWebEngineView instead of the custom one we use.
 --search-top                      Puts search bar on top of window when activated
+--user-agent UA, -u UA            User-Agent string to use (default: "Mozilla/5.0...")
 --debug, -d                       Makes app print more debug messages during execution
 ```
 

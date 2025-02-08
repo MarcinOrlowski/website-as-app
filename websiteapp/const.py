@@ -41,3 +41,8 @@ class Const(object):
         APP_DESCRIPTION,
         APP_URL,
     ]
+
+    # Set Chrome-like user agent
+    __chrome_version = "115.0.5790.170"  # Using a recent stable Chrome version
+    __webkit_version = "537.36"  # WebKit version used by Chrome
+    APP_USER_AGENT = f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/{__webkit_version} (KHTML, like Gecko) Chrome/{__chrome_version} Safari/{__webkit_version}"

@@ -4,6 +4,9 @@
 
 ---
 
+* @dev (2025-02-08)
+  * Added option to set custom user agent string with `--user-agent` switch.
+
 * 1.7.0 (2025-01-23)
   * Tray icon now shows `--name` value as its tooltip when set.
   * The `extras/website.sh` helper script now handles arguments with spaces correctly.
