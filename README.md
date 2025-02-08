@@ -9,7 +9,9 @@ Run any website as standalone desktop application
 This tool offers a unique approach to web browsing by opening any webpage in a dedicated
 window using the embedded QT WebEngine. By removing the typical browser UI elements, it effectively
 turns websites into standalone desktop applications. This can be particularly useful if you've ever
-wished to run a frequently used website as a separate app, independent from your main browser.
+wished to run a frequently used website as a separate app, independent from your main browser. This
+also can help when there's no native application available (like native Linux version of most of
+the popular LLM based chatbots services like ChatGPT or Claude.
 
 It provides a practical solution for those who find themselves juggling numerous browser tabs
 or wanting a clearer separation between work and personal web applications. With each website
