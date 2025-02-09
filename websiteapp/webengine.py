@@ -26,7 +26,7 @@ from PySide6.QtCore import Qt
 
 
 class CustomWebEngineView(QWebEngineView):
-    def __init__(self, parent=None, debug=False):
+    def __init__(self, parent=None, debug=False, app_name=None):
         super().__init__(parent)
         self.debug = debug  # Store the debug flag to conditionally add the dump action
         self.loading = False  # Keep track of whether a page is loading
@@ -42,6 +42,8 @@ class CustomWebEngineView(QWebEngineView):
 
         # Store current zoom factor
         self._current_zoom = 1.0
+
+        self.app_name = app_name if app_name else 'app'
 
     def set_search_toolbar(self, toolbar):
         """
@@ -154,7 +156,7 @@ class CustomWebEngineView(QWebEngineView):
         #     menu.addAction(dump_stack_action)
 
         # Add custom action to quit the application
-        quit_action = QAction("Quit app…", self)
+        quit_action = QAction(f"Quit {self.app_name}…", self)
         quit_action.triggered.connect(self.quit_app)
         menu.addAction(quit_action)
 

@@ -76,9 +76,9 @@ class WebApp(QMainWindow):
         if not self.args.no_tray:
             self.setup_tray_icon(app_icon)
 
-        window_title = self.args.name if self.args.name else self.args.url
-        window_title += f' ({self.args.profile})' if self.args.debug else ''
-        self.setWindowTitle(f'{window_title} · {Const.APP_NAME}')
+        self.app_name = self.args.name if self.args.name else self.args.url
+        self.app_name += f' ({self.args.profile})' if self.args.debug else ''
+        self.setWindowTitle(f'{self.app_name} · {Const.APP_NAME}')
 
         # Create a persistent profile (cookie jar etc.)
         self.profile = QWebEngineProfile(self.args.profile, self)
@@ -106,7 +106,7 @@ class WebApp(QMainWindow):
         if self.args.no_custom_webengine:
             self.browser = QWebEngineView(self)
         else:
-            self.browser = CustomWebEngineView(self, debug=self.args.debug)
+            self.browser = CustomWebEngineView(self, debug=self.args.debug, app_name=self.app_name)
         self.browser.setPage(self.page)
         self.browser.setZoomFactor(self.args.zoom)
 
