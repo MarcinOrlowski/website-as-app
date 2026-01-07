@@ -2,7 +2,7 @@
 
 # WebApp
 
-![PyPI - Version](https://img.shields.io/pypi/v/website-as-app?style=flat)
+[![PyPI - Version](https://img.shields.io/pypi/v/website-as-app?style=flat)](https://pypi.org/project/website-as-app/)
 ![GitHub License](https://img.shields.io/github/license/MarcinOrlowski/website-as-app)
 [![PyPI Downloads](https://static.pepy.tech/badge/website-as-app)](https://pepy.tech/projects/flex-text-table)
 
