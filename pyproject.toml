@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "website-as-app"
+dynamic = ["version"]
+description = "Opens any web site as standalone desktop app."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    {name = "Marcin Orlowski", email = "mail@marcinOrlowski.com"}
+]
+keywords = ["webapp", "desktop", "app"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "argparse>=1.4.0",
+    "PySide6",
+    "PyQtWebEngine",
+    "fasteners",
+]
+
+[project.urls]
+Homepage = "https://github.com/MarcinOrlowski/website-as-app/"
+"Bug Tracker" = "https://github.com/MarcinOrlowski/website-as-app/issues/"
+Documentation = "https://github.com/MarcinOrlowski/website-as-app/"
+"Source Code" = "https://github.com/MarcinOrlowski/website-as-app/"
+
+[project.scripts]
+webapp = "websiteapp.webapp:WebApp.run"
+runasapp = "websiteapp.webapp:WebApp.run"
+
+[tool.setuptools.dynamic]
+version = {attr = "websiteapp._version.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["websiteapp*"]
+
+[tool.setuptools.package-data]
+websiteapp = ["icons/*.png"]

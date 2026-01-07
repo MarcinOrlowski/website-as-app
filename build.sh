@@ -12,13 +12,9 @@
 #
 ##################################################################################
 
-# Function to extract version components from const.py
+# Function to extract version from _version.py
 extract_version() {
-    local const_file="websiteapp/const.py"
-    local major=$(sed -n 's/.*MAJOR *= *\([0-9]\+\).*/\1/p' "$const_file")
-    local minor=$(sed -n 's/.*MINOR *= *\([0-9]\+\).*/\1/p' "$const_file")
-    local patch=$(sed -n 's/.*PATCH *= *\([0-9]\+\).*/\1/p' "$const_file")
-    echo "${major}.${minor}.${patch}"
+    sed -n 's/^__version__ *= *"\([^"]*\)".*/\1/p' "websiteapp/_version.py"
 }
 
 # Extract version

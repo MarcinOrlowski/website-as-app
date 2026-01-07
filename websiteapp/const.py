@@ -14,24 +14,15 @@
 ##################################################################################
 """
 
-from enum import Enum
 from typing import List
 
-
-class Version(Enum):
-    MAJOR = 1
-    MINOR = 8
-    PATCH = 0
-
-    @classmethod
-    def as_string(cls) -> str:
-        return f"{cls.MAJOR.value}.{cls.MINOR.value}.{cls.PATCH.value}"
+from websiteapp._version import __version__
 
 
 class Const(object):
     APP_NAME: str = 'Website As App'
     APP_PROJECT_NAME: str = 'website-as-app'
-    APP_VERSION: str = Version.as_string()
+    APP_VERSION: str = __version__
     APP_URL: str = 'https://github.com/MarcinOrlowski/website-as-app/'
     APP_DESCRIPTION: str = 'Opens any web site as standalone desktop app.'
     APP_YEAR: int = 2026
