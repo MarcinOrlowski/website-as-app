@@ -12,20 +12,21 @@ This is regular Python package and is also hosted
 on [PyPi](https://pypi.org/project/website-as-app/) so
 you can install it as usual. But because this one is supposed to rather act as the application, I
 strongly recommend to use [pipx](https://pipx.pypa.io/) to install this tool in isolated
-environment:
+environment be it on Linux, Windows or MacOS machines. Once you got `pipx` up
+and running, install the package:
 
 ```bash
 $ pipx install website-as-app
 ```
 
-You can also use plain `pip`:
+Of course, you can also use plain `pip` to do that, but:
 
 ```bash
 $ pip install website-as-app
 ```
 
-But that might be a problem on some distributions no longer allowing such installations, therefore
-use of `pipx` is strongly recommended as the all-in-one solution.
+But that might be a problem as some distributions no longer allow system-wide installations,
+therefore use of `pipx` is strongly recommended as the all-in-one solution.
 
 Once installed `webapp` executable (and its alias `runasapp`) should be available in your system.
 Please use `--help` to see all available options, as i.e. custom icons, window title etc.
@@ -35,7 +36,7 @@ Please use `--help` to see all available options, as i.e. custom icons, window t
 When app is installed system-wide, you can run it from anywhere:
 
 ```bash
-$ webapp "https://github.com"
+$ webapp "https://claude.ai"
 ```
 
 If you are using virtual environment, there's handy Bash script in `extras/` directory
@@ -43,7 +44,7 @@ which takes care of initializing virtual environment and running the app using t
 You simply use `extras/webapp.sh` script instead of `webapp` directly:
 
 ```bash
-$ extras/webapp.sh "https://github.com"
+$ extras/webapp.sh "https://claude.ai"
 ```
 
 ### Configuration
@@ -66,14 +67,15 @@ url                   The URL to open
 options:
 --profile PROFILE, -p PROFILE     Profile name (for cookies isolation etc). Default: "default"
 --name NAME, -n NAME              Application name (shown as window title)
---icon ICON, -i ICON              Full path to PNG image file to be used as app icon
+--icon ICON, -i ICON              Full path to PNG image file to be used as custom app icon
 --geometry GEOMETRY, -g GEOMETRY  Initial window ("WIDTHxHEIGHT+X+Y"). Default: "450x600+0+0"
---zoom ZOOM, -z ZOOM              WebView scale. Default: 1.0 (no scale change).
+--zoom ZOOM, -z ZOOM              WebView scale (1.0 means no scale change). Default: 1.0
 --no-tray, -t                     Disables docking app in system tray (closing window quits app)
 --minimized, -m                   Starts app minimized to system tray.
 --allow-multiple, -a              Allows multiple instances of the app to run on the same profile
 --no-custom-webengine             Uses built-in QWebEngineView instead of the custom one we use.
 --search-top                      Puts search bar on top of window when activated
+--user-agent UA, -u UA            User-Agent string to use (default: "Mozilla/5.0...")
 --debug, -d                       Makes app print more debug messages during execution
 ```
 
@@ -109,6 +111,6 @@ as they normally would in a traditional browser environment.
 
 ## License
 
-* Written and copyrighted &copy;2023-2025 by Marcin Orlowski <mail (#) marcinorlowski (.) com>
+* Written and copyrighted &copy;2023-2026 by Marcin Orlowski <mail (#) marcinorlowski (.) com>
 * ResponseBuilder is open-sourced software licensed under
   the [MIT license](http://opensource.org/licenses/MIT)

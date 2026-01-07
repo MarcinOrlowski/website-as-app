@@ -4,7 +4,7 @@
 # Run any website as standalone desktop application
 #
 # @author    Marcin Orlowski <mail (#) marcinOrlowski (.) com>
-# @copyright 2023-2025 Marcin Orlowski
+# @copyright 2023-2026 Marcin Orlowski
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
@@ -17,15 +17,13 @@
 #
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v6.0.0
     hooks:
       # Prevent giant files from being committed
       - id: check-added-large-files
         args: ['--maxkb=1555550']
       # This hook checks yaml files for parseable syntax
       - id: check-yaml
-      # forbid files which have a UTF-8 byte-order marker
-      - id: check-byte-order-marker
       # Check for files that would conflict in case-insensitive filesystems
       - id: check-case-conflict
       # Ensures that (non-binary) executables have a shebang.
@@ -39,7 +37,7 @@ repos:
         args: ['--fix=no']
 
   - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.9.0
+    rev: v1.10.0
     hooks:
       # Forbid files which have a UTF-8 Unicode replacement character
       - id: text-unicode-replacement-char

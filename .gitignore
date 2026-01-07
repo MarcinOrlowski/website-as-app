@@ -9,9 +9,6 @@
 
 
 # Linters
-/.flake8
-/.markdownlint.yml
-/.pre-commit-config.yaml
 /venv/
 
 # IDEA

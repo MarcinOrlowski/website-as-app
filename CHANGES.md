@@ -4,6 +4,11 @@
 
 ---
 
+* 1.8.0 (2026-01-07)
+  * Added bookmark support with context menu integration.
+  * Added option to set custom user agent string with `--user-agent` switch.
+  * App name and profile is now included in context menu actions like `Quit <NAME>`
+
 * 1.7.0 (2025-01-23)
   * Tray icon now shows `--name` value as its tooltip when set.
   * The `extras/website.sh` helper script now handles arguments with spaces correctly.

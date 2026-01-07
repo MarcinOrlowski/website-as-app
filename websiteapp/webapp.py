@@ -5,7 +5,7 @@
 # Run any website as standalone desktop application
 #
 # @author    Marcin Orlowski <mail (#) marcinOrlowski (.) com>
-# @copyright 2023-2025 Marcin Orlowski
+# @copyright 2023-2026 Marcin Orlowski
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
@@ -38,6 +38,7 @@ from PySide6.QtWidgets import (
 )
 
 from websiteapp.about import About
+from websiteapp.bookmarks import BookmarkManager
 from websiteapp.const import Const
 from websiteapp.toolbar import SearchToolBar, SearchBarPosition
 from websiteapp.utils import Utils
@@ -76,9 +77,9 @@ class WebApp(QMainWindow):
         if not self.args.no_tray:
             self.setup_tray_icon(app_icon)
 
-        window_title = self.args.name if self.args.name else self.args.url
-        window_title += f' ({self.args.profile})' if self.args.debug else ''
-        self.setWindowTitle(f'{window_title} · {Const.APP_NAME}')
+        self.app_name = self.args.name if self.args.name else self.args.url
+        self.app_name += f' ({self.args.profile})' if self.args.debug else ''
+        self.setWindowTitle(f'{self.app_name} · {Const.APP_NAME}')
 
         # Create a persistent profile (cookie jar etc.)
         self.profile = QWebEngineProfile(self.args.profile, self)
@@ -87,6 +88,9 @@ class WebApp(QMainWindow):
         self.dbug(f'Profile: {self.args.profile}')
         self.dbug(f'Cache path: {self.profile.cachePath()}')
         self.dbug(f'Persistent storage: {self.profile.persistentStoragePath()}')
+
+        # Initialize bookmark manager with profile storage path
+        self.bookmark_manager = BookmarkManager(self.profile.persistentStoragePath())
 
         # Set Chrome-like user agent
         chrome_version = "115.0.5790.170"  # Using a recent stable Chrome version
@@ -106,7 +110,12 @@ class WebApp(QMainWindow):
         if self.args.no_custom_webengine:
             self.browser = QWebEngineView(self)
         else:
-            self.browser = CustomWebEngineView(self, debug=self.args.debug)
+            self.browser = CustomWebEngineView(
+                self,
+                debug=self.args.debug,
+                app_name=self.app_name,
+                bookmark_manager=self.bookmark_manager,
+            )
         self.browser.setPage(self.page)
         self.browser.setZoomFactor(self.args.zoom)
 
