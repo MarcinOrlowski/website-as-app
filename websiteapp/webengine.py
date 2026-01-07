@@ -17,20 +17,28 @@
 # Target file: websiteapp/custom_web_view.py
 
 import re
+from typing import Optional
 
 from PySide6.QtWidgets import QMenu, QApplication, QMessageBox
 from PySide6.QtGui import QAction, QWheelEvent
 from PySide6.QtWebEngineCore import QWebEnginePage
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QUrl
+
+from websiteapp.bookmarks import BookmarkManager
+
+# Maximum length for bookmark title display in menu
+BOOKMARK_TITLE_MAX_LEN = 30
 
 
 class CustomWebEngineView(QWebEngineView):
-    def __init__(self, parent=None, debug=False, app_name=None):
+    def __init__(self, parent=None, debug=False, app_name=None,
+                 bookmark_manager: Optional[BookmarkManager] = None):
         super().__init__(parent)
         self.debug = debug  # Store the debug flag to conditionally add the dump action
         self.loading = False  # Keep track of whether a page is loading
         self.search_toolbar = None  # Reference to search toolbar
+        self.bookmark_manager = bookmark_manager
 
         # Connect load progress to determine loading status
         self.loadStarted.connect(self.on_load_started)
@@ -149,6 +157,46 @@ class CustomWebEngineView(QWebEngineView):
 
         menu.addAction(paste_url_action)
 
+        # Add Bookmarks submenu
+        if self.bookmark_manager:
+            bookmarks_menu = QMenu("Bookmarks", self)
+            bookmark_action = QAction("Bookmark this page", self)
+            bookmark_action.triggered.connect(self.bookmark_current_page)
+            bookmarks_menu.addAction(bookmark_action)
+
+            # Add existing bookmarks
+            bookmarks = self.bookmark_manager.get_all()
+            if bookmarks:
+                bookmarks_menu.addSeparator()
+                for bookmark in bookmarks:
+                    title = bookmark.get('title', bookmark['url'])
+                    if len(title) > BOOKMARK_TITLE_MAX_LEN:
+                        display_title = title[:BOOKMARK_TITLE_MAX_LEN] + '…'
+                    else:
+                        display_title = title
+                    url = bookmark['url']
+
+                    # Create submenu for each bookmark
+                    bookmark_submenu = QMenu(display_title, self)
+
+                    # Open bookmark action
+                    open_action = QAction("Open", self)
+                    open_action.triggered.connect(
+                        lambda checked, u=url: self.setUrl(QUrl(u))
+                    )
+                    bookmark_submenu.addAction(open_action)
+
+                    # Remove bookmark action
+                    remove_action = QAction("Remove", self)
+                    remove_action.triggered.connect(
+                        lambda checked, u=url: self.bookmark_manager.remove(u)
+                    )
+                    bookmark_submenu.addAction(remove_action)
+
+                    bookmarks_menu.addMenu(bookmark_submenu)
+
+            menu.addMenu(bookmarks_menu)
+
         # # If debug mode is enabled, add the "Dump Back Stack" option
         # if self.debug:
         #     dump_stack_action = QAction("Dump Back Stack", self)
@@ -169,6 +217,15 @@ class CustomWebEngineView(QWebEngineView):
         """
         if self.search_toolbar:
             self.search_toolbar.show_search()
+
+    def bookmark_current_page(self):
+        """
+        Bookmark the current page URL and title.
+        """
+        if self.bookmark_manager:
+            url = self.url().toString()
+            title = self.page().title()
+            self.bookmark_manager.add(url, title)
 
     def copy_url_to_clipboard(self):
         """

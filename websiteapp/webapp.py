@@ -38,6 +38,7 @@ from PySide6.QtWidgets import (
 )
 
 from websiteapp.about import About
+from websiteapp.bookmarks import BookmarkManager
 from websiteapp.const import Const
 from websiteapp.toolbar import SearchToolBar, SearchBarPosition
 from websiteapp.utils import Utils
@@ -88,6 +89,9 @@ class WebApp(QMainWindow):
         self.dbug(f'Cache path: {self.profile.cachePath()}')
         self.dbug(f'Persistent storage: {self.profile.persistentStoragePath()}')
 
+        # Initialize bookmark manager with profile storage path
+        self.bookmark_manager = BookmarkManager(self.profile.persistentStoragePath())
+
         # Set Chrome-like user agent
         chrome_version = "115.0.5790.170"  # Using a recent stable Chrome version
         webkit_version = "537.36"  # WebKit version used by Chrome
@@ -106,7 +110,12 @@ class WebApp(QMainWindow):
         if self.args.no_custom_webengine:
             self.browser = QWebEngineView(self)
         else:
-            self.browser = CustomWebEngineView(self, debug=self.args.debug, app_name=self.app_name)
+            self.browser = CustomWebEngineView(
+                self,
+                debug=self.args.debug,
+                app_name=self.app_name,
+                bookmark_manager=self.bookmark_manager,
+            )
         self.browser.setPage(self.page)
         self.browser.setZoomFactor(self.args.zoom)
 
