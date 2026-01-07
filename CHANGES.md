@@ -4,7 +4,7 @@
 
 ---
 
-* @dev (????-??-??)
+* 1.8.0 (2026-01-07)
   * Added bookmark support with context menu integration.
   * Added option to set custom user agent string with `--user-agent` switch.
   * App name and profile is now included in context menu actions like `Quit <NAME>`
