@@ -1,4 +1,4 @@
-![WebApp](logo.png)
+![WebApp](img/banner.webp)
 
 # Dev corner
 

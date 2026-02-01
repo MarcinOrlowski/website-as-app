@@ -1,8 +1,9 @@
-![WebApp](docs/logo.png)
+![WebApp](docs/img/banner.webp)
 
 # CHANGES
 
----
+* 1.8.1 (2026-02-01)
+  * Updated project artwork and documentation
 
 * 1.8.0 (2026-01-07)
   * Added bookmark support with context menu integration.
