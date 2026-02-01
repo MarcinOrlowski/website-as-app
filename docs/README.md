@@ -1,4 +1,4 @@
-![WebApp](docs/logo.png)
+![WebApp](img/banner.webp)
 
 # WebApp
 

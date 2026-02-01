@@ -1,4 +1,4 @@
-![WebApp](docs/logo.png)
+![WebApp](docs/img/banner.webp)
 
 # WebApp
 
@@ -22,7 +22,7 @@ or wanting a clearer separation between work and personal web applications. With
 running as its own "app", you gain the benefit of individual entries in your window manager or task
 switcher, potentially improving your workflow organization and efficiency.
 
-![WebsiteAsApp in action](docs/screenshot.jpg)
+![WebsiteAsApp in action](docs/img/screenshot.webp)
 
 1. Github website running as standalone app
 2. Own application entry in the task switcher

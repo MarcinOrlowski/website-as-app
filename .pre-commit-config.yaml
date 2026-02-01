@@ -47,16 +47,3 @@ repos:
     hooks:
       # Non-executable shell script filename ends in .sh
       - id: script-must-have-extension
-
-  - repo: https://github.com/MarcinOrlowski/pre-commit-hooks
-    rev: 1.3.1
-    hooks:
-      # Checks modified Java files with Checkstyle linter.
-      # - id: checkstyle-jar
-      # This hook trims trailing whitespace.
-      - id: trailing-whitespaces
-        exclude_types: ['xml']
-        args: ['--markdown-linebreak-ext=md', '--fix=yes']
-      # Ensures that a file is either empty, or ends with one newline
-      - id: end-of-file
-        args: ['--fix=yes']

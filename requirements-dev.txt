@@ -2,5 +2,6 @@
 twine
 wheel
 build
+packaging>=24.2
 wemake-python-styleguide
 pyinstaller
