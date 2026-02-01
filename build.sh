@@ -28,7 +28,7 @@ if [ -z "$VERSION" ]; then
 fi
 
 ACTIVATED=0
-if [[ -n "${VIRTUAL_ENV}" ]]; then
+if [[ -z "${VIRTUAL_ENV}" ]]; then
     source venv/bin/activate
     ACTIVATED=1
 fi
