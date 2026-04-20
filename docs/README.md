@@ -109,6 +109,16 @@ typically have open. While this approach offers improved organization and workfl
 to understand that an internet connection is still required for these "apps" (websites) to function
 as they normally would in a traditional browser environment.
 
+## Troubleshoting
+
+### Linux, Vulcan, nVidia
+
+On Linux, the Qt WebEngine's Chromium is unstable on Vulkan fallback, especially with NVIDIA or Wayland sessions and it might fail with `GBM is not supported with the current configuration. Fallback to Vulkan rendering in Chromium.`. To work this around set `QTWEBENGINE_CHROMIUM_FLAGS` env var to `--disable-gpu`. You can set it globally or per invocataion: 
+
+```bash
+$ QTWEBENGINE_CHROMIUM_FLAGS="--disable-gpu" webapp ...
+```
+
 ## License
 
 * Written and copyrighted &copy;2023-2026 by Marcin Orlowski <mail (#) marcinorlowski (.) com>
