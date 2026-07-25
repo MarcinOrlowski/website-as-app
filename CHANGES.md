@@ -4,6 +4,7 @@
 
 * Improved project documentation.
 * Added application "About…" dialog.
+* Upgraded application banner.
 
 ## 1.8.1 (2026-02-01)
 
