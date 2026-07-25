@@ -1,6 +1,6 @@
 ![WebApp](docs/img/banner.webp)
 
-## 1.9.0 (TBD)
+## 1.9.0 (2026-07-25)
 
 * Improved project documentation.
 * Added application "About…" dialog.
