@@ -40,11 +40,13 @@ a = Analysis(
         ('websiteapp/icons/default.png', 'websiteapp/icons'),
         ('websiteapp/icons/logo.png', 'websiteapp/icons'),
     ],
-    hiddenimports=['websiteapp.const', 'PySide6', 'PyQtWebEngine'],
+    hiddenimports=['websiteapp.const', 'PySide6'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
-    excludes=[],
+    # PyInstaller aborts if two Qt bindings get collected, and the build image
+    # ships PyQt5. We are PySide6 only, so keep it out of the graph.
+    excludes=['PyQt5'],
     noarchive=False,
     optimize=0,
 
