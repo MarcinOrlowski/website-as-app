@@ -62,6 +62,12 @@ jobs:
         if: steps.filter.outputs.srcs == 'true'
         run: pip install -r requirements-dev.txt
 
+      # The tests import websiteapp, and the pytest console script does not put the checkout
+      # root on sys.path. Without this the whole suite fails to collect on a clean runner.
+      - name: "Installing the package…"
+        if: steps.filter.outputs.srcs == 'true'
+        run: pip install -e .
+
       - name: "Running tests…"
         if: steps.filter.outputs.srcs == 'true'
         run: pytest tests/ -v
