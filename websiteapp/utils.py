@@ -1,5 +1,5 @@
 """
-##################################################################################
+####################################################################################
 #
 # Website As App
 # Run any website as standalone desktop application
@@ -9,10 +9,9 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
-# @file      websiteapp/utils.py
-#
-##################################################################################
+####################################################################################
 """
+
 import argparse
 import importlib.resources as pkg_resources
 import os
@@ -28,8 +27,9 @@ class Utils(object):
     @staticmethod
     def get_icon(icon: Optional[str] = None) -> QIcon:
         """
-        Attempts to construct QIcon object from given icon file path. If icon file is not given
-        or does not exist, default icon is used (so it always return valid QIcon object).
+        Attempts to construct QIcon object from given icon file path. If icon file
+        is not given or does not exist, default icon is used (so it always return
+        valid QIcon object).
 
         :param icon: Path to icon file (in format supported by QT, i.e. PNG)
         :return: QIcon object
@@ -50,7 +50,7 @@ class Utils(object):
         """
         Parse the geometry string and return the width, height, x, and y values.
 
-        :param geometry_string: A string representing the geometry in the format WIDTHxHEIGHT+X+Y.
+        :param geometry_string: The geometry in the format WIDTHxHEIGHT+X+Y.
 
         :return: A tuple containing the x, y, width and height values.
         :raises ValueError: If the geometry string format is incorrect.
@@ -61,24 +61,23 @@ class Utils(object):
 
         width = int(match.group(1))
         if width < 1:
-            raise ValueError(f"Invalid geometry. Width must be greater than 0, got '{width}'")
+            raise ValueError(f"Invalid geometry. Width must be > 0, got '{width}'")
         height = int(match.group(2))
         if height < 1:
-            raise ValueError(f"Invalid geometry. Height must be greater than 0, got '{height}'")
+            raise ValueError(f"Invalid geometry. Height must be > 0, got '{height}'")
         x = int(match.group(3))
         if x < 0:
-            raise ValueError(f"Invalid geometry. X must be greater than or equal to 0, got '{x}'")
+            raise ValueError(f"Invalid geometry. X must be >= 0, got '{x}'")
         y = int(match.group(4))
         if y < 0:
-            raise ValueError(f"Invalid geometry. Y must be greater than or equal to 0, got '{y}'")
+            raise ValueError(f"Invalid geometry. Y must be >= to 0, got '{y}'")
 
         return x, y, width, height
 
     @staticmethod
     def handle_args():
         """
-        Create an argument parser to handle command line arguments for opening a website in a
-        standalone window.
+        Create an argument parser to handle command line args
 
         Note: When using --name with spaces, wrap the value in single quotes:
             --name='My App Name'
@@ -111,8 +110,6 @@ class Utils(object):
                             help='Starts app minimized to system tray.')
         parser.add_argument('--allow-multiple', '-a', action='store_true',
                             help='Allows multiple instances of the app to run on the same profile')
-        parser.add_argument('--no-custom-webengine', action='store_true',
-                            help='Uses built-in QWebEngineView instead of the custom one we use.')
         parser.add_argument('--search-top', action='store_true',
                             help='Puts search bar on top of window when activated')
         parser.add_argument('--user-agent', '-u', type=str, default=Const.APP_USER_AGENT,

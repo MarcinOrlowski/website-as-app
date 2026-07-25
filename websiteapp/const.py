@@ -1,5 +1,5 @@
 """
-##################################################################################
+####################################################################################
 #
 # Website As App
 # Run any website as standalone desktop application
@@ -9,9 +9,7 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
-# @file      websiteapp/const.py
-#
-##################################################################################
+####################################################################################
 """
 
 from typing import List
@@ -24,6 +22,7 @@ class Const(object):
     APP_PROJECT_NAME: str = 'website-as-app'
     APP_VERSION: str = __version__
     APP_URL: str = 'https://github.com/MarcinOrlowski/website-as-app/'
+    APP_BUG_TRACKER_URL: str = f'{APP_URL}issues/'
     APP_DESCRIPTION: str = 'Opens any web site as standalone desktop app.'
     APP_YEAR: int = 2026
 

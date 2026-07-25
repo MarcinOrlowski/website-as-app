@@ -1,20 +1,16 @@
 """
-##################################################################################
+####################################################################################
 #
 # Website As App
 # Run any website as standalone desktop application
 #
 # @author    Marcin Orlowski <mail (#) marcinOrlowski (.) com>
-# @copyright 2024 Marcin Orlowski
+# @copyright 2023-2026 Marcin Orlowski
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
-# @file      websiteapp/webengine.py
-#
-##################################################################################
+####################################################################################
 """
-
-# Target file: websiteapp/custom_web_view.py
 
 import re
 from typing import Optional
@@ -26,6 +22,7 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt, QUrl
 
 from websiteapp.bookmarks import BookmarkManager
+from websiteapp.const import Const
 
 # Maximum length for bookmark title display in menu
 BOOKMARK_TITLE_MAX_LEN = 30
@@ -35,7 +32,11 @@ class CustomWebEngineView(QWebEngineView):
     def __init__(self, parent=None, debug=False, app_name=None,
                  bookmark_manager: Optional[BookmarkManager] = None):
         super().__init__(parent)
-        self.debug = debug  # Store the debug flag to conditionally add the dump action
+        # Kept explicitly, as Qt reparents this widget once it is added to the
+        # window layout, so parent() no longer points at the WebApp window by
+        # the time the menu is built.
+        self.webapp_window = parent
+        self.debug = debug  # Store the flag to conditionally add the dump action
         self.loading = False  # Keep track of whether a page is loading
         self.search_toolbar = None  # Reference to search toolbar
         self.bookmark_manager = bookmark_manager
@@ -203,6 +204,14 @@ class CustomWebEngineView(QWebEngineView):
         #     dump_stack_action.triggered.connect(self.dump_back_stack)
         #     menu.addAction(dump_stack_action)
 
+        menu.addSeparator()
+
+        # Add "About" action showing the project info dialog
+        if self.webapp_window:
+            about_action = QAction(f"About {Const.APP_NAME}…", self)
+            about_action.triggered.connect(self.open_about_dialog)
+            menu.addAction(about_action)
+
         # Add custom action to quit the application
         quit_action = QAction(f"Quit {self.app_name}…", self)
         quit_action.triggered.connect(self.quit_app)
@@ -217,6 +226,14 @@ class CustomWebEngineView(QWebEngineView):
         """
         if self.search_toolbar:
             self.search_toolbar.show_search()
+
+    def open_about_dialog(self):
+        """
+        Shows the About dialog. Delegates to the main window so its cached instance
+        is reused and the tray menu and the context menu never end up with two
+        separate dialogs.
+        """
+        self.webapp_window.open_about_dialog()
 
     def bookmark_current_page(self):
         """
@@ -237,7 +254,8 @@ class CustomWebEngineView(QWebEngineView):
 
     def paste_url_from_clipboard(self):
         """
-        Pastes a URL from the clipboard into the web client if valid. Otherwise, shows an error dialog.
+        Pastes a URL from the clipboard into the web client if valid. Otherwise,
+        shows an error dialog.
         """
         clipboard = QApplication.clipboard()
         clipboard_text = clipboard.text()
@@ -245,7 +263,7 @@ class CustomWebEngineView(QWebEngineView):
         if self.is_valid_url(clipboard_text):
             self.setUrl(clipboard_text)
         else:
-            QMessageBox.warning(self, "Invalid URL", "No valid URL in clipboard found.")
+            QMessageBox.warning(self, "Invalid URL", "No valid URL in clipboard.")
 
     def dump_back_stack(self):
         """

@@ -1,5 +1,5 @@
 """
-##################################################################################
+####################################################################################
 #
 # Website As App
 # Run any website as standalone desktop application
@@ -9,9 +9,7 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
-# @file      websiteapp/toolbar.py
-#
-##################################################################################
+####################################################################################
 """
 
 from PySide6.QtCore import Qt, QTimer
@@ -151,7 +149,9 @@ class SearchToolBar(QToolBar):
         # If the toolbar is currently shown, update its position
         if self.isVisible():
             self.parent().removeToolBar(self)
-            area = Qt.ToolBarArea.TopToolBarArea if position == SearchBarPosition.TOP else Qt.ToolBarArea.BottomToolBarArea
+            area = Qt.ToolBarArea.TopToolBarArea \
+                if position == SearchBarPosition.TOP \
+                else Qt.ToolBarArea.BottomToolBarArea
             self.parent().addToolBar(area, self)
 
     def toggle_case_sensitivity(self):
@@ -171,7 +171,9 @@ class SearchToolBar(QToolBar):
         search_toolbar = cls(webapp_window.browser, position)
 
         # Add toolbar to the specified position
-        area = Qt.ToolBarArea.TopToolBarArea if position == SearchBarPosition.TOP else Qt.ToolBarArea.BottomToolBarArea
+        area = Qt.ToolBarArea.TopToolBarArea \
+            if position == SearchBarPosition.TOP \
+            else Qt.ToolBarArea.BottomToolBarArea
         webapp_window.addToolBar(area, search_toolbar)
 
         # First, remove any existing actions with the same shortcuts

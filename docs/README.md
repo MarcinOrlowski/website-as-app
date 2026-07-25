@@ -9,24 +9,20 @@ Run any website as standalone desktop application
 ## Installation
 
 This is regular Python package and is also hosted
-on [PyPi](https://pypi.org/project/website-as-app/) so
-you can install it as usual. But because this one is supposed to rather act as the application, I
-strongly recommend to use [pipx](https://pipx.pypa.io/) to install this tool in isolated
-environment be it on Linux, Windows or MacOS machines. Once you got `pipx` up
-and running, install the package:
+on [PyPi](https://pypi.org/project/website-as-app/) so you can install it as usual. But because this
+one is supposed to rather act as the application, I strongly recommend to
+use [pipx](https://pipx.pypa.io/) to install this tool in isolated environment be it on Linux,
+Windows or macOS machines.
+
+Once you got `pipx` up and running, install the package:
 
 ```bash
-$ pipx install website-as-app
+pipx install website-as-app
 ```
 
 Of course, you can also use plain `pip` to do that, but:
-
-```bash
-$ pip install website-as-app
-```
-
-But that might be a problem as some distributions no longer allow system-wide installations,
-therefore use of `pipx` is strongly recommended as the all-in-one solution.
+as most distributions no longer allow system-wide installations, therefore use of `pipx` is strongly
+recommended as the all-in-one solution.
 
 Once installed `webapp` executable (and its alias `runasapp`) should be available in your system.
 Please use `--help` to see all available options, as i.e. custom icons, window title etc.
@@ -36,15 +32,7 @@ Please use `--help` to see all available options, as i.e. custom icons, window t
 When app is installed system-wide, you can run it from anywhere:
 
 ```bash
-$ webapp "https://claude.ai"
-```
-
-If you are using virtual environment, there's handy Bash script in `extras/` directory
-which takes care of initializing virtual environment and running the app using that environment.
-You simply use `extras/webapp.sh` script instead of `webapp` directly:
-
-```bash
-$ extras/webapp.sh "https://claude.ai"
+webapp "https://mynoise.net"
 ```
 
 ### Configuration
@@ -57,7 +45,7 @@ usage: webapp [--profile PROFILE] [--name NAME] [--icon ICON] [--zoom ZOOM] [--n
 
 usage: webapp [--profile PROFILE] [--name NAME] [--icon ICON] [--geometry GEOMETRY]
               [--zoom ZOOM] [--no-tray] [--minimized] [--allow-multiple]
-              [--no-custom-webengine] [--search-top] [--version] [--debug] url
+              [--search-top] [--version] [--debug] url
 
 Open any website in standalone window (like it's an app)
 
@@ -73,29 +61,31 @@ options:
 --no-tray, -t                     Disables docking app in system tray (closing window quits app)
 --minimized, -m                   Starts app minimized to system tray.
 --allow-multiple, -a              Allows multiple instances of the app to run on the same profile
---no-custom-webengine             Uses built-in QWebEngineView instead of the custom one we use.
 --search-top                      Puts search bar on top of window when activated
 --user-agent UA, -u UA            User-Agent string to use (default: "Mozilla/5.0...")
 --debug, -d                       Makes app print more debug messages during execution
 ```
 
-**IMPORTANT**: When using arguments that contain spaces (i.e. for `--name` argument), you **must** use single quotes
-around the value, as double quotes may not work correctly in some shells causing runtime errors.
-For example `--name 'My App'` is correct, while `--name "My App"` may not work as expected because
-of shell splitting the value into two separate arguments prior to passing them to the app.
+**IMPORTANT**: When using arguments that contain spaces (i.e. for `--name` argument), you **must**
+use **single quotes** (`'`) for the value, because double quotes may not work correctly in some
+shells, causing awkward runtime errors. For example `--name 'My App'` is correct, while
+`--name "My App"` may not work as expected because of shell splitting the value into two separate
+arguments prior to passing them to the app.
 
-The most important option is `--profile` which allows you to isolate cookies and app settings
-per instance. Any instance using the same profile will have access to the same cookies and
-settings. This is useful if you want to run multiple instances of the same app, but with
-different accounts. By default `default` profile is used and it's recommended to use different
-profile per each app instance.
+#### Profile isolation
 
-By default, only one instance per profile is allowed to run (attempt to run second instance
-will bring the first one to the front). If you want to allow multiple instances of the app
-to run on the same profile, use `--allow-multiple` switch.
+The most important option is `--profile` which allows you to isolate cookies and app settings per
+instance. Any instance using the same profile will have access to the same cookies and settings.
+This is useful if you want to run multiple instances of the same app, but with different accounts.
+By default `default` profile is used and it's recommended to use different profile per each app
+instance.
 
-NOTE: `--zoom` accepts fractional values, so you can use i.e. `--zoom 1.25` to scale content up by
-25% or `--zoom 0.75` to scale down to 75% of the original size.
+By default, only one instance per profile is allowed to run (attempt to run second instance will
+bring the running instance to front). If you want to allow multiple instances of the app to run on
+the same profile, use `--allow-multiple` switch.
+
+NOTE: `--zoom` accepts fractional values, so you can use i.e. `--zoom 1.25` (with `.` as separator)
+to scale content up by 25% or `--zoom 0.75` to scale down to 75% of the original size.
 
 ## Keyboard shortcuts
 
@@ -103,14 +93,27 @@ NOTE: `--zoom` accepts fractional values, so you can use i.e. `--zoom 1.25` to s
 
 ## Notes
 
-This tool doesn't really transforms websites into offline applications. Rather, it focuses
-on separating your key websites from each other and from the multitude of browser tabs you might
-typically have open. While this approach offers improved organization and workflow, it's crucial
-to understand that an internet connection is still required for these "apps" (websites) to function
-as they normally would in a traditional browser environment.
+This tool doesn't really transforms websites into offline applications. Rather, it focuses on
+separating your key websites from each other and from the multitude of browser tabs you might
+typically have open. While this approach offers improved organization and workflow, it's crucial to
+understand that an internet connection is still required for these "apps" (websites) to function as
+they normally would in a traditional browser environment.
+
+## Troubleshoting
+
+### Linux, Vulcan, nVidia
+
+On Linux, the Qt WebEngine's Chromium is unstable on Vulkan fallback, especially with NVIDIA or
+Wayland sessions and it might fail with
+`GBM is not supported with the current configuration. Fallback to Vulkan rendering in Chromium.`. To
+work this around set `QTWEBENGINE_CHROMIUM_FLAGS` env var to `--disable-gpu`. You can set it
+globally or per invocation:
+
+```bash
+QTWEBENGINE_CHROMIUM_FLAGS="--disable-gpu" webapp ...
+```
 
 ## License
 
 * Written and copyrighted &copy;2023-2026 by Marcin Orlowski <mail (#) marcinorlowski (.) com>
-* ResponseBuilder is open-sourced software licensed under
-  the [MIT license](http://opensource.org/licenses/MIT)
+* This is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
