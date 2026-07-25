@@ -26,6 +26,7 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import Qt, QUrl
 
 from websiteapp.bookmarks import BookmarkManager
+from websiteapp.const import Const
 
 # Maximum length for bookmark title display in menu
 BOOKMARK_TITLE_MAX_LEN = 30
@@ -35,6 +36,9 @@ class CustomWebEngineView(QWebEngineView):
     def __init__(self, parent=None, debug=False, app_name=None,
                  bookmark_manager: Optional[BookmarkManager] = None):
         super().__init__(parent)
+        # Kept explicitly, as Qt reparents this widget once it is added to the window layout,
+        # so parent() no longer points at the WebApp window by the time the menu is built.
+        self.webapp_window = parent
         self.debug = debug  # Store the debug flag to conditionally add the dump action
         self.loading = False  # Keep track of whether a page is loading
         self.search_toolbar = None  # Reference to search toolbar
@@ -203,6 +207,14 @@ class CustomWebEngineView(QWebEngineView):
         #     dump_stack_action.triggered.connect(self.dump_back_stack)
         #     menu.addAction(dump_stack_action)
 
+        menu.addSeparator()
+
+        # Add "About" action showing the project info dialog
+        if self.webapp_window:
+            about_action = QAction(f"About {Const.APP_NAME}…", self)
+            about_action.triggered.connect(self.open_about_dialog)
+            menu.addAction(about_action)
+
         # Add custom action to quit the application
         quit_action = QAction(f"Quit {self.app_name}…", self)
         quit_action.triggered.connect(self.quit_app)
@@ -217,6 +229,13 @@ class CustomWebEngineView(QWebEngineView):
         """
         if self.search_toolbar:
             self.search_toolbar.show_search()
+
+    def open_about_dialog(self):
+        """
+        Shows the About dialog. Delegates to the main window so its cached instance is reused
+        and the tray menu and the context menu never end up with two separate dialogs.
+        """
+        self.webapp_window.open_about_dialog()
 
     def bookmark_current_page(self):
         """

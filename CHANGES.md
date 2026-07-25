@@ -2,7 +2,8 @@
 
 ## 1.9.0 (TBD)
 
-* Improved project documentation
+* Improved project documentation.
+* Added application "About…" dialog.
 
 ## 1.8.1 (2026-02-01)
 
@@ -29,7 +30,7 @@
 * Fixed handling of arguments using spaces (i.e. `--name="foo bar").
 * Lock file name is now based on the sanitized profile name.
 
-# 1.6.0 (2024-12-16)
+# 1.6.0 (2024-12-16)gs
 
 * Spoofed `User-Agent` string to make WhatsApp website work.
 

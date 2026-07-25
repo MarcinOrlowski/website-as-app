@@ -47,3 +47,8 @@ repos:
     hooks:
       # Non-executable shell script filename ends in .sh
       - id: script-must-have-extension
+
+  - repo: https://github.com/MarcinOrlowski/pre-commit-hooks
+    rev: 1.6.0
+    hooks:
+      - id: no-ai-slop

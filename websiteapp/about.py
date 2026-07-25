@@ -32,7 +32,8 @@ class About(QDialog):
         # Set the layout for the dialog
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 6)
-        layout.setSpacing(0)
+        # Breathing room around the text block, between it and the logo above and buttons below
+        layout.setSpacing(30)
         self.setLayout(layout)
         self.setWindowTitle(f"About {Const.APP_NAME}")
 
@@ -45,6 +46,8 @@ class About(QDialog):
 
         # Create a label for the credits text
         label_layout = QVBoxLayout()
+        # Nested layouts inherit the parent spacing, which would spread these 3 lines apart
+        label_layout.setSpacing(0)
 
         label = QLabel(f'<b>{Const.APP_NAME}</b> v{Const.APP_VERSION}', self)
         label.setTextFormat(Qt.RichText)
@@ -62,16 +65,25 @@ class About(QDialog):
         label.setFont(font)
         label_layout.addWidget(label)
 
-        label = QLabel(Const.APP_URL, self)
-        # label.setTextFormat(Qt.RichText)
+        label_layout.addSpacing(16)
+
+        label = QLabel(f'<a href="{Const.APP_URL}">{Const.APP_URL}</a>', self)
+        label.setTextFormat(Qt.RichText)
         label.setAlignment(Qt.AlignCenter)
+        # Routed through our own handler rather than setOpenExternalLinks(), so that clicking the
+        # link behaves exactly like the button: same browser call, and the dialog closes.
+        label.linkActivated.connect(lambda _url: self.on_website_clicked())
         label_layout.addWidget(label)
 
         layout.addLayout(label_layout)
 
         # # Create a horizontal layout for the buttons
-        bt_website = QPushButton("Open project website", self)
-        bt_website.clicked.connect(self.on_ok_clicked)
+        bt_website = QPushButton("Project website", self)
+        bt_website.clicked.connect(self.on_website_clicked)
+
+        bt_bug = QPushButton("Report problems", self)
+        bt_bug.clicked.connect(self.on_bug_clicked)
+
         bt_close = QPushButton("Close", self)
         bt_close.clicked.connect(self.on_cancel_clicked)
         bt_close.setFocus()
@@ -80,11 +92,21 @@ class About(QDialog):
         button_layout.setContentsMargins(6, 6, 6, 6)
         button_layout.setSpacing(6)
         button_layout.addWidget(bt_website)
+        button_layout.addWidget(bt_bug)
+        button_layout.addStretch()
         button_layout.addWidget(bt_close)
         layout.addLayout(button_layout)
 
-    def on_ok_clicked(self):
+        # Contents are of fixed height (logo + a few labels + buttons), so there's nothing to
+        # gain from vertical resizing. Width is left adjustable.
+        self.setFixedHeight(self.sizeHint().height())
+
+    def on_website_clicked(self):
         webbrowser.open(Const.APP_URL)
+        self.reject()
+
+    def on_bug_clicked(self):
+        webbrowser.open(Const.APP_BUG_TRACKER_URL)
         self.reject()
 
     def on_cancel_clicked(self):
