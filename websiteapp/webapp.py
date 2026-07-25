@@ -1,5 +1,5 @@
 """
-##################################################################################
+####################################################################################
 #
 # Website As App
 # Run any website as standalone desktop application
@@ -9,10 +9,9 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
-# @file      websiteapp/webapp.py
-#
-##################################################################################
+####################################################################################
 """
+
 import os
 import re
 import sys
@@ -63,7 +62,7 @@ class WebApp(QMainWindow):
 
         if not self.args.allow_multiple:
             if not self.acquire_lock():
-                sys.exit(0)  # Exit silently as we've activated the existing instance
+                sys.exit(0)
 
         self.setup_activation_listener()
 
@@ -89,10 +88,9 @@ class WebApp(QMainWindow):
         self.dbug(f'Cache path: {self.profile.cachePath()}')
         self.dbug(f'Persistent storage: {self.profile.persistentStoragePath()}')
 
-        # Initialize bookmark manager with profile storage path
-        self.bookmark_manager = BookmarkManager(self.profile.persistentStoragePath())
+        self.bookmark_manager = BookmarkManager(
+            self.profile.persistentStoragePath())
 
-        # Set Chrome-like user agent
         chrome_version = "115.0.5790.170"  # Using a recent stable Chrome version
         webkit_version = "537.36"  # WebKit version used by Chrome
         user_agent = f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/{webkit_version} (KHTML, like Gecko) Chrome/{chrome_version} Safari/{webkit_version}"
@@ -122,16 +120,20 @@ class WebApp(QMainWindow):
         web_settings = self.browser.settings()
 
         # Enable all required clipboard permissions
-        web_settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard,
-                                  True)
-        web_settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanPaste, True)
         web_settings.setAttribute(
-            QWebEngineSettings.WebAttribute.AllowWindowActivationFromJavaScript, True)
+            QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard,
+            True)
+        web_settings.setAttribute(
+            QWebEngineSettings.WebAttribute.JavascriptCanPaste, True)
+        web_settings.setAttribute(
+            QWebEngineSettings.WebAttribute.AllowWindowActivationFromJavaScript,
+            True)
         # Additional profile settings for clipboard
         self.profile.settings().setAttribute(
             QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
-        self.profile.settings().setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanPaste,
-                                             True)
+        self.profile.settings().setAttribute(
+            QWebEngineSettings.WebAttribute.JavascriptCanPaste,
+            True)
 
         self.browser.setPage(self.page)
         self.browser.setZoomFactor(self.args.zoom)
@@ -154,8 +156,10 @@ class WebApp(QMainWindow):
         self.setCentralWidget(central_widget)
 
         # Setup search toolbar
-        search_position = SearchBarPosition.TOP if self.args.search_top else SearchBarPosition.BOTTOM
-        self.search_toolbar = SearchToolBar.setup_for_window(self, position=search_position)
+        search_position = SearchBarPosition.TOP if self.args.search_top \
+            else SearchBarPosition.BOTTOM
+        self.search_toolbar = SearchToolBar.setup_for_window(self,
+                                                             position=search_position)
         # Add this line to connect the search toolbar to the CustomWebEngineView
         if not self.args.no_custom_webengine:
             self.browser.set_search_toolbar(self.search_toolbar)
@@ -166,7 +170,8 @@ class WebApp(QMainWindow):
         Returns True if lock was acquired, False otherwise.
         """
         sanitized_profile = self.sanitize_profile_name(self.args.profile)
-        lock_file = os.path.join(os.path.expanduser("~"), f".websiteapp_{sanitized_profile}.lock")
+        lock_file = os.path.join(os.path.expanduser("~"),
+                                 f".websiteapp_{sanitized_profile}.lock")
         self.lock = fasteners.InterProcessLock(lock_file)
         if not self.lock.acquire(blocking=False):
             self.activate_existing_instance()
@@ -199,7 +204,8 @@ class WebApp(QMainWindow):
         """
         Sends a signal to the existing instance to activate its window.
         """
-        self.dbug(f"Bringing existing instance: {Const.APP_NAME}, profile: {self.args.profile}")
+        self.dbug(
+            f"Bringing existing instance: {Const.APP_NAME}, profile: {self.args.profile}")
         signal_file = os.path.join(os.path.expanduser("~"),
                                    f".websiteapp_{self.args.profile}_signal")
         with open(signal_file, 'w') as f:
@@ -217,7 +223,7 @@ class WebApp(QMainWindow):
 
     def check_activation_signal(self, path):
         """
-        Checks for activation signals and brings the window to front if signal is received.
+        Checks for activation signals and brings the window to front if received.
         """
         signal_file = os.path.join(path, f".websiteapp_{self.args.profile}_signal")
         if os.path.exists(signal_file):
@@ -234,7 +240,8 @@ class WebApp(QMainWindow):
 
     def closeEvent(self, event) -> None:
         """
-        Override closeEvent to hide the window instead of closing it and hides the window instead.
+        Override closeEvent to hide the window instead of closing it and hides
+        the window instead.
 
         :param event:
         """
@@ -251,7 +258,7 @@ class WebApp(QMainWindow):
         """
         This method is used to set up the system tray icon for the application.
 
-        :param icon: QPixmap object representing the icon that will be used in the system tray.
+        :param icon: QPixmap icon that will be used in the system tray.
         """
         tray_menu = QMenu()
 
@@ -313,18 +320,18 @@ class WebApp(QMainWindow):
         """
         self.hide() if self.isVisible() else self.show()
 
-    # ############################################################################################ #
+    # ############################################################################ #
 
     def dbug(self, msg: str) -> None:
         if self.args.debug:
             print(msg, file=sys.stderr)
 
-    # ############################################################################################ #
+    # ############################################################################ #
 
     @staticmethod
     def run() -> None:
         """
-        Application entry point. When renamed, ensure setup.py's reference is updated as well.
+        Application entry point.
         """
         app = QApplication(sys.argv)
         app.setOrganizationName("MarcinOrlowski")
