@@ -90,10 +90,8 @@ class WebApp(QMainWindow):
         self.bookmark_manager = BookmarkManager(
             self.profile.persistentStoragePath())
 
-        chrome_version = "115.0.5790.170"  # Using a recent stable Chrome version
-        webkit_version = "537.36"  # WebKit version used by Chrome
-        user_agent = f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/{webkit_version} (KHTML, like Gecko) Chrome/{chrome_version} Safari/{webkit_version}"
-        self.agent = self.profile.setHttpUserAgent(user_agent)
+        # Defaults to Const.APP_USER_AGENT, see Utils.handle_args()
+        self.profile.setHttpUserAgent(self.args.user_agent)
 
         # Create and configure the webpage
         self.page = QWebEnginePage(self.profile, self)

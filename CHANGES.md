@@ -7,6 +7,7 @@
 * Improved project documentation.
 * Upgraded application banner.
 * Dropped `--no-custom-webengine` option.
+* Fixed `--user-agent` option being ignored.
 
 ## 1.8.1 (2026-02-01)
 
