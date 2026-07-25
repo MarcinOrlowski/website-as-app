@@ -18,7 +18,6 @@ import sys
 from typing import Optional
 
 import fasteners
-from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtCore import QUrl, QFileSystemWatcher, Qt
 from PySide6.QtGui import QAction
 from PySide6.QtWebEngineCore import QWebEnginePage
@@ -104,16 +103,12 @@ class WebApp(QMainWindow):
         # Handle downloads
         self.profile.downloadRequested.connect(self.on_download_requested)
 
-        # Modified to use CustomWebEngineView
-        if self.args.no_custom_webengine:
-            self.browser = QWebEngineView(self)
-        else:
-            self.browser = CustomWebEngineView(
-                self,
-                debug=self.args.debug,
-                app_name=self.app_name,
-                bookmark_manager=self.bookmark_manager,
-            )
+        self.browser = CustomWebEngineView(
+            self,
+            debug=self.args.debug,
+            app_name=self.app_name,
+            bookmark_manager=self.bookmark_manager,
+        )
         self.browser.setPage(self.page)
         self.browser.setZoomFactor(self.args.zoom)
 
@@ -161,8 +156,7 @@ class WebApp(QMainWindow):
         self.search_toolbar = SearchToolBar.setup_for_window(self,
                                                              position=search_position)
         # Add this line to connect the search toolbar to the CustomWebEngineView
-        if not self.args.no_custom_webengine:
-            self.browser.set_search_toolbar(self.search_toolbar)
+        self.browser.set_search_toolbar(self.search_toolbar)
 
     def acquire_lock(self) -> bool:
         """

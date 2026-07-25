@@ -6,6 +6,7 @@
 * Added unit tests to the project.
 * Improved project documentation.
 * Upgraded application banner.
+* Dropped `--no-custom-webengine` option.
 
 ## 1.8.1 (2026-02-01)
 
