@@ -1,5 +1,5 @@
 """
-##################################################################################
+####################################################################################
 #
 # Website As App
 # Run any website as standalone desktop application
@@ -9,9 +9,7 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
-# @file      tests/test_webengine.py
-#
-##################################################################################
+####################################################################################
 """
 
 import pytest
@@ -21,8 +19,8 @@ from websiteapp.webengine import CustomWebEngineView
 
 class TestIsValidUrl:
     """
-    is_valid_url() is a @staticmethod over a plain regex, so it needs neither a widget
-    instance nor a running QApplication.
+    is_valid_url() is a @staticmethod over a plain regex, so it needs neither a
+    widget instance nor a running QApplication.
     """
 
     @pytest.mark.parametrize('url', [

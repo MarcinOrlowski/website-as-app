@@ -1,5 +1,5 @@
 """
-##################################################################################
+####################################################################################
 #
 # Website As App
 # Run any website as standalone desktop application
@@ -9,9 +9,7 @@
 # @license   https://www.opensource.org/licenses/mit-license.php MIT
 # @link      https://github.com/MarcinOrlowski/website-as-app
 #
-# @file      websiteapp/const.py
-#
-##################################################################################
+####################################################################################
 """
 
 from typing import List
