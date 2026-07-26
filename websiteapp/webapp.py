@@ -19,10 +19,11 @@ from typing import Optional
 
 import fasteners
 from PySide6.QtCore import QUrl, QFileSystemWatcher, Qt
-from PySide6.QtGui import QAction
+from PySide6.QtGui import QAction, QPalette
 from PySide6.QtWebEngineCore import QWebEnginePage
 from PySide6.QtWebEngineCore import (
     QWebEngineProfile,
+    QWebEngineScript,
     QWebEngineSettings,
 )
 from PySide6.QtWidgets import (
@@ -93,6 +94,8 @@ class WebApp(QMainWindow):
         # Defaults to Const.APP_USER_AGENT, see Utils.handle_args()
         self.profile.setHttpUserAgent(self.args.user_agent)
 
+        self.setup_color_scheme()
+
         # Create and configure the webpage
         self.page = QWebEnginePage(self.profile, self)
         # Connect permission request handler
@@ -155,6 +158,42 @@ class WebApp(QMainWindow):
                                                              position=search_position)
         # Add this line to connect the search toolbar to the CustomWebEngineView
         self.browser.set_search_toolbar(self.search_toolbar)
+
+    def setup_color_scheme(self) -> None:
+        """
+        Makes web content follow a dark desktop theme.
+
+        Chromium paints scrollbars and default form controls light unless the page
+        opts into a dark color scheme, so a dark desktop theme alone still leaves
+        white scrollbars behind. When the application palette is dark, force the
+        root element into the dark color scheme.
+        """
+        window_color = self.app.palette().color(QPalette.ColorRole.Window)
+        if not Utils.is_dark_color(window_color):
+            return
+
+        self.dbug('Dark palette detected, forcing dark color scheme')
+
+        source = """
+            (function() {
+                var apply = function() {
+                    if (document.documentElement) {
+                        document.documentElement.style.setProperty(
+                            'color-scheme', 'dark', 'important');
+                    }
+                };
+                apply();
+                document.addEventListener('DOMContentLoaded', apply);
+            })();
+        """
+
+        script = QWebEngineScript()
+        script.setName('websiteapp_dark_color_scheme')
+        script.setInjectionPoint(QWebEngineScript.InjectionPoint.DocumentCreation)
+        script.setWorldId(QWebEngineScript.ScriptWorldId.MainWorld)
+        script.setRunsOnSubFrames(True)
+        script.setSourceCode(source)
+        self.profile.scripts().insert(script)
 
     def acquire_lock(self) -> bool:
         """

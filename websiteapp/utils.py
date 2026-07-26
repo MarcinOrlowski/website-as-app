@@ -18,12 +18,28 @@ import os
 import re
 from typing import Optional
 
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QColor, QIcon
 
 from websiteapp.const import Const
 
 
 class Utils(object):
+    # Lightness (0-255) below which a color counts as dark.
+    DARK_LIGHTNESS_THRESHOLD = 128
+
+    @staticmethod
+    def is_dark_color(color: QColor) -> bool:
+        """
+        Tells if given color is a dark one.
+
+        Args:
+            color (QColor): Color to check, usually the palette's window color.
+
+        Returns:
+            bool: True if the color is dark, False otherwise.
+        """
+        return color.lightness() < Utils.DARK_LIGHTNESS_THRESHOLD
+
     @staticmethod
     def get_icon(icon: Optional[str] = None) -> QIcon:
         """
