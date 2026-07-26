@@ -1,5 +1,9 @@
 ![WebApp](docs/img/banner.webp)
 
+## 1.10.0 (TBD)
+
+* Window sliders now follow system dark/light theme
+
 ## 1.9.0 (2026-07-25)
 
 * Added application "About…" dialog.

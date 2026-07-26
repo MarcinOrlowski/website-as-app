@@ -13,6 +13,7 @@
 """
 
 import pytest
+from PySide6.QtGui import QColor
 
 from websiteapp.utils import Utils
 
@@ -80,3 +81,29 @@ class TestParseGeometry:
         """
         with pytest.raises(ValueError, match='Expected WIDTHxHEIGHT'):
             Utils.parse_geometry('450x600+-5+0')
+
+
+class TestIsDarkColor:
+    @pytest.mark.parametrize('color', [
+        '#000000',
+        '#1e1e1e',  # Breeze Dark window color
+        '#2a2e32',
+    ])
+    def test_dark_colors(self, color):
+        assert Utils.is_dark_color(QColor(color))
+
+    @pytest.mark.parametrize('color', [
+        '#ffffff',
+        '#eff0f1',  # Breeze (light) window color
+        '#808080',  # Lightness 128, the threshold itself counts as light
+    ])
+    def test_light_colors(self, color):
+        assert not Utils.is_dark_color(QColor(color))
+
+    def test_uses_lightness_not_luminance(self):
+        """
+        HSL lightness, not perceived brightness: saturated pure blue is dark to the
+        eye but sits exactly at the threshold, so it is reported as light.
+        """
+        assert QColor('#0000ff').lightness() == 128
+        assert not Utils.is_dark_color(QColor('#0000ff'))
